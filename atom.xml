@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>HSR&#39;s blog</title>
+  <title>庸的博客</title>
   
-  <subtitle>我爱代码</subtitle>
+  <subtitle>爱代码,爱生活~</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
