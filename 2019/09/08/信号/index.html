@@ -4,24 +4,24 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>Hello World | HSR&#39;s blog</title>
+    <title>Linux系统编程-信号 | HSR&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="HSR">
     
 
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="信号的概念信号在我们的生活中随处可见， 如：古代战争中摔杯为号；现代战争中的信号弹；体育比赛中使用的信号枪……他们都有共性：1. 简单 2. 不能携带大量信息 3. 满足某个特设条件才发送。 信号是信息的载体，Linux/UNIX 环境下，古老、经典的通信方式， 现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失。Berkeley 和 AT&amp;amp;T都对信号模型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2019/09/08/hello-world/index.html">
+<meta property="og:title" content="Linux系统编程-信号">
+<meta property="og:url" content="http://yoursite.com/2019/09/08/信号/index.html">
 <meta property="og:site_name" content="HSR&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="信号的概念信号在我们的生活中随处可见， 如：古代战争中摔杯为号；现代战争中的信号弹；体育比赛中使用的信号枪……他们都有共性：1. 简单 2. 不能携带大量信息 3. 满足某个特设条件才发送。 信号是信息的载体，Linux/UNIX 环境下，古老、经典的通信方式， 现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失。Berkeley 和 AT&amp;amp;T都对信号模型">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-08T01:17:03.178Z">
+<meta property="og:updated_time" content="2019-09-08T10:04:18.758Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Linux系统编程-信号">
+<meta name="twitter:description" content="信号的概念信号在我们的生活中随处可见， 如：古代战争中摔杯为号；现代战争中的信号弹；体育比赛中使用的信号枪……他们都有共性：1. 简单 2. 不能携带大量信息 3. 满足某个特设条件才发送。 信号是信息的载体，Linux/UNIX 环境下，古老、经典的通信方式， 现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失。Berkeley 和 AT&amp;amp;T都对信号模型">
 
     
     <link rel="alternative" href="/atom.xml" title="HSR&#39;s blog" type="application/atom+xml">
@@ -81,14 +81,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/09/08/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2019/09/08/信号/" title="Linux系统编程-信号" itemprop="url">Linux系统编程-信号</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="HSR" target="_blank" itemprop="author">HSR</a>
 		
   <p class="article-time">
-    <time datetime="2019-09-08T01:17:03.178Z" itemprop="datePublished"> 发表于 2019-09-08</time>
+    <time datetime="2019-09-08T02:30:53.000Z" itemprop="datePublished"> 发表于 2019-09-08</time>
     
   </p>
 </header>
@@ -97,23 +97,13 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#信号的概念"><span class="toc-number">1.</span> <span class="toc-text">信号的概念</span></a></li></ol>
 		
 		</div>
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+		<h2 id="信号的概念"><a href="#信号的概念" class="headerlink" title="信号的概念"></a>信号的概念</h2><p>信号在我们的生活中随处可见， 如：古代战争中摔杯为号；现代战争中的信号弹；体育比赛中使用的信号枪……他们都有共性：1. 简单 2. 不能携带大量信息 3. 满足某个特设条件才发送。</p>
+<p>信号是信息的载体，Linux/UNIX 环境下，古老、经典的通信方式， 现下依然是主要的通信手段。</p>
+<p>Unix早期版本就提供了信号机制，但不可靠，信号可能丢失。Berkeley 和 AT&amp;T都对信号模型做了更改，增加了可靠信号机制。但彼此不兼容。POSIX.1对可靠信号例程进行了标准化。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -126,7 +116,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2019/09/08/hello-world/" data-title="Hello World | HSR&#39;s blog" data-tsina="" class="share clearfix">
+	  <div data-url="http://yoursite.com/2019/09/08/信号/" data-title="Linux系统编程-信号 | HSR&#39;s blog" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -139,14 +129,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2019/09/08/信号/" title="Linux系统编程-信号">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Linux系统编程-信号</span>
+
+<div class="next">
+<a href="/2019/09/08/hello-world/"  title="Hello World">
+ <strong>下一篇：</strong><br/> 
+ <span>Hello World
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -160,7 +150,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#信号的概念"><span class="toc-number">1.</span> <span class="toc-text">信号的概念</span></a></li></ol>
  
   </div>
 
