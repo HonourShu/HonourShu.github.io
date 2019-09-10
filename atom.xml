@@ -5,9 +5,9 @@
   <subtitle>爱代码,爱生活~</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2019-09-10T02:30:59.182Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="www.huangshurong.top/"/>
+  <updated>2019-09-10T02:43:08.932Z</updated>
+  <id>www.huangshurong.top/</id>
   
   <author>
     <name>HSR</name>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>Linux系统编程-线程</title>
-    <link href="http://yoursite.com/2019/09/10/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B-%E7%BA%BF%E7%A8%8B/"/>
-    <id>http://yoursite.com/2019/09/10/Linux系统编程-线程/</id>
+    <link href="www.huangshurong.top/2019/09/10/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B-%E7%BA%BF%E7%A8%8B/"/>
+    <id>www.huangshurong.top/2019/09/10/Linux系统编程-线程/</id>
     <published>2019-09-10T02:00:27.247Z</published>
-    <updated>2019-09-10T02:30:59.182Z</updated>
+    <updated>2019-09-10T02:43:08.932Z</updated>
     
     <content type="html"><![CDATA[<h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>LWP：light weight process 轻量级的进程，本质仍是进程(在Linux环境下)<br>进程：独立地址空间，拥有PCB<br>线程：也有PCB，但没有独立的地址空间(共享)<br>区别：在于是否共享地址空间。    独居(进程)；合租(线程)。<br>Linux下：    线程：最小的执行单位<br>             进程：最小分配资源单位，可看成是只有一个线程的进程。</p><figure class="image-box">                <img src="/2019/09/10/Linux系统编程-线程/Hexo\source\_posts\Linux系统编程-线程\p1.png" alt="." title class>                <p>.</p>            </figure><h3 id="Linux内核线程实现原理"><a href="#Linux内核线程实现原理" class="headerlink" title="Linux内核线程实现原理"></a><strong>Linux内核线程实现原理</strong></h3><p>类Unix系统中，早期是没有“线程”概念的，80年代才引入，借助进程机制实现出了线程的概念。因此在这类系统中，进程和线程关系密切。</p><ol><li><p>轻量级进程(light-weight process)，也有PCB，创建线程使用的底层函数和进程一样，都是clone</p></li><li><p>从内核里看进程和线程是一样的，都有各自不同的PCB，但是PCB中指向内存资源的三级页表是相同的</p></li><li><p>进程可以蜕变成线程</p></li><li><p>线程可看做寄存器和栈的集合</p></li><li><p>在linux下，线程最是小的执行单位；进程是最小的分配资源单位</p></li></ol><p>察看LWP号：ps –Lf pid 查看指定线程的lwp号。</p>]]></content>
     
@@ -40,8 +40,8 @@
   
   <entry>
     <title>Linux系统编程-信号</title>
-    <link href="http://yoursite.com/2019/09/08/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B-%E4%BF%A1%E5%8F%B7/"/>
-    <id>http://yoursite.com/2019/09/08/Linux系统编程-信号/</id>
+    <link href="www.huangshurong.top/2019/09/08/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B-%E4%BF%A1%E5%8F%B7/"/>
+    <id>www.huangshurong.top/2019/09/08/Linux系统编程-信号/</id>
     <published>2019-09-08T02:30:53.000Z</published>
     <updated>2019-09-08T16:41:04.021Z</updated>
     
