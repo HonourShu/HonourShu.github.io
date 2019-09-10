@@ -141,8 +141,8 @@
         <h1 class="title">Linux系统编程-进程</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-09-10T03:07:27.000Z" itemprop="datePublished" class="page-time">
-  2019-09-10
+                <time datetime="2019-09-05T03:07:27.000Z" itemprop="datePublished" class="page-time">
+  2019-09-05
 </time>
 
 
@@ -174,7 +174,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Linux系统编程-进程</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-09-10 11:07:27" datetime="2019-09-10T03:07:27.000Z"  itemprop="datePublished">2019-09-10</time>
+            <time class="post-time" title="2019-09-05 11:07:27" datetime="2019-09-05T03:07:27.000Z"  itemprop="datePublished">2019-09-05</time>
 
             
 
@@ -195,14 +195,14 @@
 <p>如：同时开两个终端。各自都有一个bash但彼此ID不同。</p>
 <h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a><strong>并发</strong></h3><p>并发，在操作系统中，一个时间段中有多个进程都处于已启动运行到运行完毕之间的状态。但，任一个时刻点上仍只有一个进程在运行。</p>
 <p>例如，当下，我们使用计算机时可以边听音乐边聊天边上网。 若笼统的将他们均看做一个进程的话，为什么可以同时运行呢，因为并发。</p>
-<a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork1.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork1.png" title="This is an example image"></a>
+<a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork1.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork1.png" title="This is an example image"></a>
 
 <h3 id="单道程序设计"><a href="#单道程序设计" class="headerlink" title="单道程序设计"></a><strong>单道程序设计</strong></h3><p>所有进程一个一个排对执行。若A阻塞，B只能等待，即使CPU处于空闲状态。而在人机交互时阻塞的出现时必然的。所有这种模型在系统资源利用上及其不合理，在计算机发展历史上存在不久，大部分便被淘汰了。</p>
 <h3 id="多道程序设计"><a href="#多道程序设计" class="headerlink" title="多道程序设计"></a><strong>多道程序设计</strong></h3><p>在计算机内存中同时存放几道相互独立的程序，它们在管理程序控制之下，相互穿插的运行。多道程序设计必须有硬件基础作为保证。</p>
 <p><strong>时钟中断</strong>即为多道程序设计模型的理论基础。 并发时，任意进程在执行期间都不希望放弃cpu。因此系统需要一种强制让进程让出cpu资源的手段。时钟中断有硬件基础作为保障，对进程而言不可抗拒。 操作系统中的中断处理函数，来负责调度程序执行。</p>
-<h2 id="CPU和MMU"><a href="#CPU和MMU" class="headerlink" title="CPU和MMU"></a><strong>CPU和MMU</strong></h2><a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork2.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork2.png" title="This is an example image"></a>
+<h2 id="CPU和MMU"><a href="#CPU和MMU" class="headerlink" title="CPU和MMU"></a><strong>CPU和MMU</strong></h2><a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork2.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork2.png" title="This is an example image"></a>
 
-<a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork3.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork3.png" title="This is an example image"></a>
+<a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork3.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork3.png" title="This is an example image"></a>
 
 <h2 id="进程控制块PCB"><a href="#进程控制块PCB" class="headerlink" title="进程控制块PCB"></a><strong>进程控制块PCB</strong></h2><p>我们知道，每个进程在内核中都有一个进程控制块（PCB）来维护进程相关的信息，Linux内核的进程控制块是task_struct结构体。</p>
 <p>/usr/src/linux-headers-3.16.0-30/include/linux/sched.h文件中可以查看struct task_struct 结构体定义。其内部成员有很多，我们重点掌握以下部分即可：</p>
@@ -219,7 +219,7 @@
 <p>* 会话（Session）和进程组。</p>
 <p>* 进程可以使用的资源上限（Resource Limit）。</p>
 <h2 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a><strong>进程状态</strong></h2><p>进程基本的状态有5种。分别为初始态，就绪态，运行态，挂起态与终止态。其中初始态为进程准备阶段，常与就绪态结合来看。</p>
-<a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork4.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork4.png"></a>
+<a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork4.png" title="" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork4.png"></a>
 
 <h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a><strong>环境变量</strong></h2><p>按照惯例，环境变量字符串都是name=value这样的形式，大多数name由大写字母加下划线组成，一般把name的部分叫做环境变量，value的部分则是环境变量的值。环境变量定义了进程的运行环境，一些比较重要的环境变量的含义如下：</p>
 <h4 id="PATH"><a href="#PATH" class="headerlink" title="PATH"></a><strong>PATH</strong></h4><p>可执行文件的搜索路径。ls命令也是一个程序，执行它不需要提供完整的路径名/bin/ls，然而通常我们执行当前目录下的程序a.out却需要提供完整的路径名./a.out，这是因为PATH环境变量的值里面包含了ls命令所在的目录/bin，却不包含a.out所在的目录。PATH环境变量的值可以包含多个目录，用:号隔开。在Shell中用echo命令可以查看这个环境变量的值：</p>
@@ -241,7 +241,7 @@
 <p>pid_t fork(void);    失败返回-1；成功返回：① 父进程返回子进程的ID(非负)    ②子进程返回 0 </p>
 <p>pid_t类型表示进程ID，但为了表示-1，它是有符号整型。(0不是有效进程ID，init最小，为1)</p>
 <p>​    注意返回值，不是fork函数能返回两个值，而是fork后，fork函数变为两个，父子需【各自】返回一个。</p>
-<a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork6.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork6.png"></a>
+<a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork6.png" title="" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork6.png"></a>
 
 <p>从上图我们可以很清晰的看到，当n为3时候，循环创建了(2^n)-1个子进程，而不是N的子进程。需要在循环的过程，保证子进程不再执行fork ，因此当(fork() == 0)时，子进程应该立即break;才正确。</p>
 <h4 id="循环创建n个子进程"><a href="#循环创建n个子进程" class="headerlink" title="循环创建n个子进程"></a><strong>循环创建n个子进程</strong></h4><p>一次fork函数调用可以创建一个子进程。那么创建N个子进程应该怎样实现呢？</p>
@@ -303,7 +303,7 @@
 <p>v (vector)            使用命令行参数数组</p>
 <p>e (environment)    使用环境变量数组,不使用进程原有的环境变量，设置新加载程序运行的环境变量</p>
 <p>事实上，只有execve是真正的系统调用，其它五个函数最终都调用execve，所以execve在man手册第2节，其它函数在man手册第3节。这些函数之间的关系如下图所示。</p>
-<a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork5.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork5.png"></a>
+<a rel=Linux系统编程-进程 href="/2019/09/05/Linux系统编程-进程/fork5.png" title="" data-fancybox="images"><img src="/2019/09/05/Linux系统编程-进程/fork5.png"></a>
 
 <h2 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a><strong>回收子进程</strong></h2><h4 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a><strong>孤儿进程</strong></h4><p>​    孤儿进程: 父进程先于子进程结束，则子进程成为孤儿进程，子进程的父进程成为init进程，称为init进程领养孤儿进程。</p>
 <h4 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a><strong>僵尸进程</strong></h4><p>僵尸进程: 进程终止，父进程尚未回收，子进程残留资源（PCB）存放于内核中，变成僵尸（Zombie）进程。  </p>
@@ -340,12 +340,12 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-09-10T07:52:28.611Z" itemprop="dateUpdated">2019-09-10 15:52:28</time>
+    最后更新时间：<time datetime="2019-09-10T08:19:38.423Z" itemprop="dateUpdated">2019-09-10 16:19:38</time>
 </span><br>
 
 
         
-        转载注明出处，原文地址：<a href="/2019/09/10/Linux系统编程-进程/" target="_blank" rel="external">www.huangshurong.top/2019/09/10/Linux系统编程-进程/</a>
+        转载注明出处，原文地址：<a href="/2019/09/05/Linux系统编程-进程/" target="_blank" rel="external">www.huangshurong.top/2019/09/05/Linux系统编程-进程/</a>
         
     </div>
     <footer>
@@ -366,7 +366,7 @@
     <ul class="reset share-icons">
       
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/05/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -378,7 +378,7 @@
       </li>
       
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/05/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -404,20 +404,13 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="prev">
-      <a href="/2019/09/10/Linux系统编程-进程间通信/" id="post-prev" class="post-nav-link">
+      <a href="/2019/09/06/Linux系统编程-进程间通信/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
         <h4 class="title">Linux系统编程-进程间通信</h4>
       </a>
     </div>
   
 
-  
-    <div class="next">
-      <a href="/2019/09/10/Linux系统编程-线程/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">Linux系统编程-线程</h4>
-      </a>
-    </div>
   
 </nav>
 
@@ -497,7 +490,7 @@
     <ul class="reset share-icons">
       
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/05/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -509,7 +502,7 @@
       </li>
       
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/05/Linux系统编程-进程/&title=《Linux系统编程-进程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -521,7 +514,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3aS24jMQwFQN//0h4gqwQTt9+jbCCWSivD6I9KC7ZE8naLx/1rfP/9fVxf+f9dyZNv7xgYGBgfy7hfjuupP3rl9VSun3P93odUDAyMAxh5kH10Vx6U8+uLZcLAwMAoJ51MJd+GYmBgYMwYs20fBgYGxgqjDZpJaqy9Kzk8v+AsjoGB8YGMlSD47t9vr29gYGD8eca9HO12MN/k5UH2l1lhYGBszVhPyueNFy0mXzIMDIy9GclDZ2XIvGCwsln88d3AwMA4gJEn1161ZbwO00V7BwYGxgGMWUkgP6y27WJtVg0DA+McxiwpNkvrv+q4i4GBcQJjljLLy5zr4bjYVmJgYGzKmKX1k8NnEpTzdN6TRcHAwDiGsZLuT8qQ+ZIl+Kj+iYGBsRFjlgi7B6NtqkhC9pNmCwwMjO0Y7bTaUJhsB1+VwsPAwNiVkYS/ZKJtgG7/KZotMDAwtmPUlwbUPB62ZYMn88HAwNiUkSfO2n/+RAkTAwNjC8asYWulwSJPz80KDBgYGPsxZu0R+cvWWzeiRjQMDIxjGPnjkhTb7GnttwIDA+MExixxNqskzraedYIPAwNjO8a9HG3aKz/i5u1fGBgYpzFmYa4Npu0GdKUsioGBsStjJcjOGizy1F4R6DEwMA5grLSLFemwtqaafyswMDAwFhq88nTbEgkDAwNjIaQmabVZWMfAwDiNsV4MyENnG4gxMDAwZoWBtoSZbBnzxaoBGBgYn8r4B28N9RtpjrmFAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3a0W7CMAxGYd7/pTtpt6Ph/HaLVuf0CkFp8m2SsR2/Xvg6fq+/r88+PXvn7Dln91x8yZAh47GMY3kRxpq9XnH9fLI3GTJk7MPgQZaExXXYra37Yc8yZMiQATZBYJ30UYYMGTL6gY8H4tprGTJkyCBF7LqMXL+fdslurMVlyJDxQEbnYODu118635AhQ8Y/ZhyNq1++rkN2sBMZMmSMZvDisxblOt/irTcZMmTMZqSLpUlkWtzyFd/8bsiQIWM0gzT3CTjdHAHH/UIZMmQMZaSBsgbjiSNv87353ZAhQ8Y4Ru0AgITmtK3W6fbLkCFjNoO07DutMZ4OdgYvZMiQMZtRa4fx8Yh0K2lRLUOGjH0YnbyS35Omm+QoQoYMGTsw0rYXT/JqTyv+B2TIkLE9g6d9nWGL9NggmBmRIUPGCAZfhiNJ0OQHAx++JUOGjNEMPrzVad93gm+cSsqQIWMcIy1E04ZamgIWBzhkyJAxmkFaWmkiSJYkf4gLElMZMmQMYsTtrZsL1Fr7T4YMGbsxOmMWtdKUp6SnO5chQ8ZoRi2lI4ndZbkqHviQIUPGPMYRXmk6SMJr7WhBhgwZ+zDS8YgLUjewfK0NJ0OGjNkMXrLWUrerwnc8ayZDhoxxjFrg69xTi/0XnG/IkCFjGwZv1ZGtp+MXMmTIkNGpg/k9neMHGTJk7MngoxWkfOXbSt+RIUPGnoy0dEwHKfhz0vGy1vmGDBkynsH4AdeWqHaNEr0hAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 

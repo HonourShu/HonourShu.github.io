@@ -141,8 +141,8 @@
         <h1 class="title">Linux系统编程-进程间通信</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-09-10T07:31:59.000Z" itemprop="datePublished" class="page-time">
-  2019-09-10
+                <time datetime="2019-09-06T07:31:59.000Z" itemprop="datePublished" class="page-time">
+  2019-09-06
 </time>
 
 
@@ -174,7 +174,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Linux系统编程-进程间通信</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-09-10 15:31:59" datetime="2019-09-10T07:31:59.000Z"  itemprop="datePublished">2019-09-10</time>
+            <time class="post-time" title="2019-09-06 15:31:59" datetime="2019-09-06T07:31:59.000Z"  itemprop="datePublished">2019-09-06</time>
 
             
 
@@ -189,7 +189,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             <h2 id="IPC方法"><a href="#IPC方法" class="headerlink" title="IPC方法"></a><strong>IPC方法</strong></h2><p>Linux环境下，进程地址空间相互独立，每个进程各自有不同的用户地址空间。任何一个进程的全局变量在另一个进程中都看不到，所以进程和进程之间不能相互访问，要交换数据必须通过内核，在内核中开辟一块缓冲区，进程1把数据从用户空间拷到内核缓冲区，进程2再从内核缓冲区把数据读走，内核提供的这种机制称为进程间通信（IPC，InterProcess Communication）。</p>
-<a rel=Linux系统编程-进程间通信 href="/2019/09/10/Linux系统编程-进程间通信/ipc1.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程间通信/ipc1.png"></a> 
+<a rel=Linux系统编程-进程间通信 href="/2019/09/06/Linux系统编程-进程间通信/ipc1.png" title="" data-fancybox="images"><img src="/2019/09/06/Linux系统编程-进程间通信/ipc1.png"></a> 
 
 <p>​    在进程间完成数据传递需要借助操作系统提供特殊的方法，如：文件、管道、信号、共享内存、消息队列、套接字、命名管道等。随着计算机的蓬勃发展，一些方法由于自身设计缺陷被淘汰或者弃用。现今常用的进程间通信方式有：</p>
 <p>​    ① 管道 (使用最简单)</p>
@@ -216,7 +216,7 @@
 <p>​    int pipe(int pipefd[2]);        成功：0；失败：-1，设置errno</p>
 <p>函数调用成功返回r/w两个文件描述符。无需open，但需手动close。规定：fd[0] → r； fd[1] → w，就像0对应标准输入，1对应标准输出一样。向管道文件读写数据其实是在读写内核缓冲区。</p>
 <p>管道创建成功以后，创建该管道的进程（父进程）同时掌握着管道的读端和写端。如何实现父子进程间通信呢？通常可以采用如下步骤：</p>
-<a rel=Linux系统编程-进程间通信 href="/2019/09/10/Linux系统编程-进程间通信/ipc2.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程间通信/ipc2.png"></a>  
+<a rel=Linux系统编程-进程间通信 href="/2019/09/06/Linux系统编程-进程间通信/ipc2.png" title="" data-fancybox="images"><img src="/2019/09/06/Linux系统编程-进程间通信/ipc2.png"></a>  
 
 <ol>
 <li><p>父进程调用pipe函数创建管道，得到两个文件描述符fd[0]、fd[1]指向管道的读端和写端。</p>
@@ -268,7 +268,7 @@
 <h2 id="共享存储映射"><a href="#共享存储映射" class="headerlink" title="共享存储映射"></a><strong>共享存储映射</strong></h2><h3 id="文件进程间通信"><a href="#文件进程间通信" class="headerlink" title="文件进程间通信"></a><strong>文件进程间通信</strong></h3><p>使用文件也可以完成IPC，理论依据是，fork后，父子进程共享文件描述符。也就共享打开的文件。</p>
 <h3 id="存储映射I-O"><a href="#存储映射I-O" class="headerlink" title="存储映射I/O"></a><strong>存储映射I/O</strong></h3><p>​    存储映射I/O (Memory-mapped I/O) 使一个磁盘文件与存储空间中的一个缓冲区相映射。于是当从缓冲区中取数据，就相当于读文件中的相应字节。于此类似，将数据存入缓冲区，则相应的字节就自动写入文件。这样，就可在不适用read和write函数的情况下，使用地址（指针）完成I/O操作。</p>
 <p>​    使用这种方法，首先应通知内核，将一个指定文件映射到存储区域中。这个映射工作可以通过mmap函数来实现。</p>
-<a rel=Linux系统编程-进程间通信 href="/2019/09/10/Linux系统编程-进程间通信/ipc3.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程间通信/ipc3.png"></a>  
+<a rel=Linux系统编程-进程间通信 href="/2019/09/06/Linux系统编程-进程间通信/ipc3.png" title="" data-fancybox="images"><img src="/2019/09/06/Linux系统编程-进程间通信/ipc3.png"></a>  
 
 <h4 id="mmap函数"><a href="#mmap函数" class="headerlink" title="mmap函数"></a><strong>mmap函数</strong></h4><p>void *mmap(void *adrr, size_t length, int prot, int flags, int fd, off_t offset); </p>
 <p>返回：成功：返回创建的映射区首地址；<strong>失败：MAP_FAILED宏</strong></p>
@@ -341,12 +341,12 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-09-10T07:45:05.994Z" itemprop="dateUpdated">2019-09-10 15:45:05</time>
+    最后更新时间：<time datetime="2019-09-10T08:19:46.894Z" itemprop="dateUpdated">2019-09-10 16:19:46</time>
 </span><br>
 
 
         
-        转载注明出处，原文地址：<a href="/2019/09/10/Linux系统编程-进程间通信/" target="_blank" rel="external">www.huangshurong.top/2019/09/10/Linux系统编程-进程间通信/</a>
+        转载注明出处，原文地址：<a href="/2019/09/06/Linux系统编程-进程间通信/" target="_blank" rel="external">www.huangshurong.top/2019/09/06/Linux系统编程-进程间通信/</a>
         
     </div>
     <footer>
@@ -367,7 +367,7 @@
     <ul class="reset share-icons">
       
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/06/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -379,7 +379,7 @@
       </li>
       
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/06/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -402,12 +402,19 @@
         
     </div>
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="prev">
+      <a href="/2019/09/08/Linux系统编程-信号/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Linux系统编程-信号</h4>
+      </a>
+    </div>
   
 
   
     <div class="next">
-      <a href="/2019/09/10/Linux系统编程-进程/" id="post-next" class="post-nav-link">
+      <a href="/2019/09/05/Linux系统编程-进程/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
         <h4 class="title">Linux系统编程-进程</h4>
       </a>
@@ -491,7 +498,7 @@
     <ul class="reset share-icons">
       
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/06/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -503,7 +510,7 @@
       </li>
       
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/10/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/06/Linux系统编程-进程间通信/&title=《Linux系统编程-进程间通信》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -515,7 +522,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW4bMRAEQP3/0w6QqyKpe4aMdag9GZZ2l0UDJN0zj0d8/fy9Hovr1RN+nq7n7z9/evjCw8PDG7341ZV/5/2TE1JyVz0ePDw8vGu890t5PtD37PcTlzDyMePh4eF9Ay/5tN1gkucn48HDw8P7fl4Ly7+TxBl4eHh438BLFvTkWPz+rpx6LBzBw8PDu8DbLMq/9fPF+h4eHh7eoqqeLMptaWofahSjxcPDw7vAmxWZ8sap5PnJ9LVjqLu68PDw8Ba8JBhNXrx5ZrsJfXg+Hh4e3jVe0hrVLujtVjHLEz5MKx4eHt4FXr645wWtqKg/mpTZ2/Hw8PBO8fLjcrIx5JtB++R8VMP/BvDw8PBKXtve1IYCbUCcbDDRtoGHh4d3jbc5ELfH8fw3s2aFaDfDw8PDO8rbLO5t+T850OeB74fSFx4eHt4h3uZf/bZwdeqQXbdn4eHh4R3lJa/fxxMHyvyz4hweHh7eBV4bks7K/G2o0cYQxeEbDw8P7wLvbIA7a8yaNRAMtxk8PDy8krdxt02lLam993H2z4qHh4cXxLhtMJEMK48P9lvOSzAeHh7eBV4eAbRNWqfumsUWeHh4eDd4sxJX21C1Kae1oS0eHh7e/+HtC1ez6HZ/EP8QiODh4eFd4OWvz1fafND5ZLXPxMPDw7vHSxb0/IjcNkjtN6QPR3Y8PDy8y7xZmWpf4J+9MZogPDw8vAu8fLizgDUviW2awIp2BDw8PLw1b9ZK1R6IN3FGO0F1qoGHh4dX8vIrjxVutG3V+xseHh7eZV6+GcyarmaLe9ueFSUueHh4eEd5qwwjnqb20Nzub/+4Cw8PD+9XebOhbxqw9mEHHh4e3jfwZp+2U3YsAsbDw8O7xsvDiDYyaJu69jEEHh4e3m3erAA2Cws2m8rsyI6Hh4d3lPcHB6kr8BlghX8AAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwElEQVR42u3aQZLCMAwEQP7/abZqrxBnJNnAoXPagpC4fbC0Yz8e8fX8vyb3XH37fLle73/9dvOFh4eH1xr61bV+wdWAkl8l367ftR4zHh4e3mneeimfDGV9f14S1lN5+TkeHh7eV3nV5niNSYpKXoTw8PDwfpk3f/1NExzEGXh4eHi/wEsW9OT+/MXVEnI8a8HDw8Orvb25KH/r74P7e3h4eHiDXfXqZlheAPKJm1x4eHh4J3i9TaZquNCLdKtloPAfAx4eHt5WXr7Q944aVCPgJBa5eT4eHh7eVl5+ZGqySVZtsqt5wuUb8fDw8L7ES5rgXjFYL/3Vowk3MQQeHh7eJl7+j30vtM0/78Uize0xPDw8vAEvWax7C/0kIE7eG5UNPDw8vA/y1i/ulYfqJ9Uwt1AY8PDw8DbxdrXCeTSQx8d50PAma8HDw8PbyssBk8Z3b5NdPp6Fh4eHd4yXbNXnQ5yUnHnQHFU/PDw8vAGvd2igt1hX2+LeJOLh4eGd5s0jg2qbnjfi+QGCZlaNh4eHV+QlC/0kwugNrgd79B6Nh4eHV+QldSPftq/Gvr2DC+UjWXh4eHgHeL2b1gOdRBW9gwKFUBgPDw9vwMu3uCYHquaHDPKChIeHh/cZ3nzjqtqUT1rk/FACHh4e3gne+hHVxbo66Hyyqs/Ew8PDO8ebMKrlJJmU6kTc/AOAh4eHd5iXxBCTsLXXNPeOLBQqHh4eHl6RVw1Vk6C2Oim9gwj5VhweHh7eXt6zePUa4upvJxNUTjXw8PDwirz8mg+xF8vmcQYeHh7eJ3l5MehtR01a9upBq5vEBQ8PD28rr5dh9KYgb5qr9e3Nr/Dw8PC+ylt/Ur2zejiguXmGh4eH9zO8fEHPt7vm8fG2woCHh4cX8CZhRHWIp2MIPDw8vNO8yQZYbyM/f8K8ZcfDw8PbyvsDSDJUucSs8/UAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
