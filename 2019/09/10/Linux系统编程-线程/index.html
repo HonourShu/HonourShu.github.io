@@ -189,12 +189,9 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             <h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>LWP：light weight process 轻量级的进程，本质仍是进程(在Linux环境下)<br>进程：独立地址空间，拥有PCB<br>线程：也有PCB，但没有独立的地址空间(共享)<br>区别：在于是否共享地址空间。    独居(进程)；合租(线程)。<br>Linux下：    线程：最小的执行单位<br>             进程：最小分配资源单位，可看成是只有一个线程的进程。</p>
-<figure class="image-box">
-                <a rel=Linux系统编程-线程 href="/2019/09/10/Linux系统编程-线程/Hexo\source\_posts\Linux系统编程-线程\p1.png" title="." data-fancybox="images"><img src="/2019/09/10/Linux系统编程-线程/Hexo\source\_posts\Linux系统编程-线程\p1.png" alt="." title class></a>
-                <p>.</p>
-            </figure>
+<a rel=Linux系统编程-线程 href="/2019/09/10/Linux系统编程-线程/p1.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-线程/p1.png" title="This is an example image"></a>
 
-<h3 id="Linux内核线程实现原理"><a href="#Linux内核线程实现原理" class="headerlink" title="Linux内核线程实现原理"></a><strong>Linux内核线程实现原理</strong></h3><p>类Unix系统中，早期是没有“线程”概念的，80年代才引入，借助进程机制实现出了线程的概念。因此在这类系统中，进程和线程关系密切。</p>
+<h2 id="Linux内核线程实现原理"><a href="#Linux内核线程实现原理" class="headerlink" title="Linux内核线程实现原理"></a><strong>Linux内核线程实现原理</strong></h2><p>类Unix系统中，早期是没有“线程”概念的，80年代才引入，借助进程机制实现出了线程的概念。因此在这类系统中，进程和线程关系密切。</p>
 <ol>
 <li><p>轻量级进程(light-weight process)，也有PCB，创建线程使用的底层函数和进程一样，都是clone</p>
 </li>
@@ -215,7 +212,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-09-10T02:43:08.932Z" itemprop="dateUpdated">2019-09-10 10:43:08</time>
+    最后更新时间：<time datetime="2019-09-10T02:57:05.397Z" itemprop="dateUpdated">2019-09-10 10:57:05</time>
 </span><br>
 
 
@@ -295,7 +292,7 @@
         <aside class="post-widget">
             <nav class="post-toc-wrap" id="post-toc">
                 <strong>目录</strong>
-                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">线程概念</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Linux内核线程实现原理"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Linux内核线程实现原理</span></a></li></ol></li></ol>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">线程概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux内核线程实现原理"><span class="post-toc-number">2.</span> <span class="post-toc-text">Linux内核线程实现原理</span></a></li></ol>
             </nav>
             <div class="toc-bar"><div>
         </aside>
