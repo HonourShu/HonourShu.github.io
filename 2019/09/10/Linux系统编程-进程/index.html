@@ -193,12 +193,12 @@
 <p>程序 → 剧本(纸)        进程 → 戏(舞台、演员、灯光、道具…)</p>
 <p>同一个剧本可以在多个舞台同时上演。同样，同一个程序也可以加载为不同的进程(彼此之间互不影响)</p>
 <p>如：同时开两个终端。各自都有一个bash但彼此ID不同。</p>
-<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a><strong>并发</strong></h2><p>并发，在操作系统中，一个时间段中有多个进程都处于已启动运行到运行完毕之间的状态。但，任一个时刻点上仍只有一个进程在运行。</p>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a><strong>并发</strong></h3><p>并发，在操作系统中，一个时间段中有多个进程都处于已启动运行到运行完毕之间的状态。但，任一个时刻点上仍只有一个进程在运行。</p>
 <p>例如，当下，我们使用计算机时可以边听音乐边聊天边上网。 若笼统的将他们均看做一个进程的话，为什么可以同时运行呢，因为并发。</p>
 <a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork1.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork1.png" title="This is an example image"></a>
 
-<h2 id="单道程序设计"><a href="#单道程序设计" class="headerlink" title="单道程序设计"></a><strong>单道程序设计</strong></h2><p>所有进程一个一个排对执行。若A阻塞，B只能等待，即使CPU处于空闲状态。而在人机交互时阻塞的出现时必然的。所有这种模型在系统资源利用上及其不合理，在计算机发展历史上存在不久，大部分便被淘汰了。</p>
-<h2 id="多道程序设计"><a href="#多道程序设计" class="headerlink" title="多道程序设计"></a><strong>多道程序设计</strong></h2><p>在计算机内存中同时存放几道相互独立的程序，它们在管理程序控制之下，相互穿插的运行。多道程序设计必须有硬件基础作为保证。</p>
+<h3 id="单道程序设计"><a href="#单道程序设计" class="headerlink" title="单道程序设计"></a><strong>单道程序设计</strong></h3><p>所有进程一个一个排对执行。若A阻塞，B只能等待，即使CPU处于空闲状态。而在人机交互时阻塞的出现时必然的。所有这种模型在系统资源利用上及其不合理，在计算机发展历史上存在不久，大部分便被淘汰了。</p>
+<h3 id="多道程序设计"><a href="#多道程序设计" class="headerlink" title="多道程序设计"></a><strong>多道程序设计</strong></h3><p>在计算机内存中同时存放几道相互独立的程序，它们在管理程序控制之下，相互穿插的运行。多道程序设计必须有硬件基础作为保证。</p>
 <p><strong>时钟中断</strong>即为多道程序设计模型的理论基础。 并发时，任意进程在执行期间都不希望放弃cpu。因此系统需要一种强制让进程让出cpu资源的手段。时钟中断有硬件基础作为保障，对进程而言不可抗拒。 操作系统中的中断处理函数，来负责调度程序执行。</p>
 <h2 id="CPU和MMU"><a href="#CPU和MMU" class="headerlink" title="CPU和MMU"></a><strong>CPU和MMU</strong></h2><a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork2.png" title="This is an example image" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork2.png" title="This is an example image"></a>
 
@@ -228,16 +228,16 @@
 <h4 id="TERM"><a href="#TERM" class="headerlink" title="TERM"></a><strong>TERM</strong></h4><p>当前终端类型，在图形界面终端下它的值通常是xterm，终端类型决定了一些程序的输出显示方式，比如图形界面终端可以显示汉字，而字符终端一般不行。</p>
 <h4 id="LANG"><a href="#LANG" class="headerlink" title="LANG"></a><strong>LANG</strong></h4><p>语言和locale，决定了字符编码以及时间、货币等信息的显示格式。</p>
 <h4 id="HOME"><a href="#HOME" class="headerlink" title="HOME"></a><strong>HOME</strong></h4><p>当前用户主目录的路径，很多程序需要在主目录下保存配置文件，使得每个用户在运行该程序时都有自己的一套配置。</p>
-<h3 id="getenv函数"><a href="#getenv函数" class="headerlink" title="getenv函数"></a><strong>getenv函数</strong></h3><p>获取环境变量值</p>
+<h4 id="getenv函数"><a href="#getenv函数" class="headerlink" title="getenv函数"></a><strong>getenv函数</strong></h4><p>获取环境变量值</p>
 <p>​    char *getenv(const char *name);     成功：返回环境变量的值；失败：NULL (name不存在)</p>
-<h3 id="setenv函数"><a href="#setenv函数" class="headerlink" title="setenv函数"></a><strong>setenv函数</strong></h3><p>设置环境变量的值    </p>
+<h4 id="setenv函数"><a href="#setenv函数" class="headerlink" title="setenv函数"></a><strong>setenv函数</strong></h4><p>设置环境变量的值    </p>
 <p>​    int setenv(const char *name, const char *value, int overwrite);      成功：0；失败：-1</p>
 <p>​    参数overwrite取值：    1：覆盖原环境变量 </p>
 <p>0：不覆盖。(该参数常用于设置新环境变量，如：ABC = haha-day-night)</p>
-<h3 id="unsetenv函数"><a href="#unsetenv函数" class="headerlink" title="unsetenv函数"></a><strong>unsetenv函数</strong></h3><p>删除环境变量name的定义</p>
+<h4 id="unsetenv函数"><a href="#unsetenv函数" class="headerlink" title="unsetenv函数"></a><strong>unsetenv函数</strong></h4><p>删除环境变量name的定义</p>
 <p>​    int unsetenv(const char *name);     成功：0；失败：-1 </p>
 <p>​    注意事项：name不存在仍返回0(成功)，当name命名为”ABC=”时则会出错。</p>
-<h2 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a><strong>进程控制</strong></h2><h3 id="fork函数"><a href="#fork函数" class="headerlink" title="fork函数"></a><strong>fork函数</strong></h3><p>创建一个子进程。</p>
+<h2 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a><strong>进程控制</strong></h2><h4 id="fork函数"><a href="#fork函数" class="headerlink" title="fork函数"></a><strong>fork函数</strong></h4><p>创建一个子进程。</p>
 <p>pid_t fork(void);    失败返回-1；成功返回：① 父进程返回子进程的ID(非负)    ②子进程返回 0 </p>
 <p>pid_t类型表示进程ID，但为了表示-1，它是有符号整型。(0不是有效进程ID，init最小，为1)</p>
 <p>​    注意返回值，不是fork函数能返回两个值，而是fork后，fork函数变为两个，父子需【各自】返回一个。</p>
@@ -246,22 +246,22 @@
 <p>从上图我们可以很清晰的看到，当n为3时候，循环创建了(2^n)-1个子进程，而不是N的子进程。需要在循环的过程，保证子进程不再执行fork ，因此当(fork() == 0)时，子进程应该立即break;才正确。</p>
 <h4 id="循环创建n个子进程"><a href="#循环创建n个子进程" class="headerlink" title="循环创建n个子进程"></a><strong>循环创建n个子进程</strong></h4><p>一次fork函数调用可以创建一个子进程。那么创建N个子进程应该怎样实现呢？</p>
 <p>简单想，for(i = 0; i &lt; n; i++) { fork() } 即可。但这样创建的是N个子进程吗？</p>
-<h3 id="getpid函数"><a href="#getpid函数" class="headerlink" title="getpid函数"></a><strong>getpid函数</strong></h3><p>获取当前进程ID</p>
+<h4 id="getpid函数"><a href="#getpid函数" class="headerlink" title="getpid函数"></a><strong>getpid函数</strong></h4><p>获取当前进程ID</p>
 <p>​    pid_t getpid(void);        </p>
-<h3 id="getppid函数"><a href="#getppid函数" class="headerlink" title="getppid函数"></a><strong>getppid函数</strong></h3><p>​    获取当前进程的父进程ID</p>
+<h4 id="getppid函数"><a href="#getppid函数" class="headerlink" title="getppid函数"></a><strong>getppid函数</strong></h4><p>​    获取当前进程的父进程ID</p>
 <p>​        pid_t getppid(void);</p>
 <p>区分一个函数是“系统函数”还是“库函数”依据：</p>
 <p>​    ① 是否访问内核数据结构</p>
 <p>​    ② 是否访问外部硬件资源        二者有任一 → 系统函数；二者均无 → 库函数</p>
-<h3 id="getuid函数"><a href="#getuid函数" class="headerlink" title="getuid函数"></a><strong>getuid函数</strong></h3><p>获取当前进程实际用户ID</p>
+<h4 id="getuid函数"><a href="#getuid函数" class="headerlink" title="getuid函数"></a><strong>getuid函数</strong></h4><p>获取当前进程实际用户ID</p>
 <p>uid_t getuid(void);</p>
 <p>​    获取当前进程有效用户ID</p>
 <p>uid_t geteuid(void);</p>
-<h3 id="getgid函数"><a href="#getgid函数" class="headerlink" title="getgid函数"></a><strong>getgid函数</strong></h3><p>​    获取当前进程使用用户组ID</p>
+<h4 id="getgid函数"><a href="#getgid函数" class="headerlink" title="getgid函数"></a><strong>getgid函数</strong></h4><p>​    获取当前进程使用用户组ID</p>
 <p>gid_t getgid(void);</p>
 <p>​    获取当前进程有效用户组ID</p>
 <p>gid_t getegid(void);</p>
-<h3 id="进程共享"><a href="#进程共享" class="headerlink" title="进程共享"></a><strong>进程共享</strong></h3><p>父子进程之间在fork后。有哪些相同，那些相异之处呢？</p>
+<h2 id="进程共享"><a href="#进程共享" class="headerlink" title="进程共享"></a><strong>进程共享</strong></h2><p>父子进程之间在fork后。有哪些相同，那些相异之处呢？</p>
 <p>刚fork之后：</p>
 <p>父子相同处: 全局变量、.data、.text、栈、堆、环境变量、用户ID、宿主目录、进程工作目录、信号处理方式…</p>
 <p>父子不同处: 1.进程ID   2.fork返回值   3.父进程ID    4.进程运行时间    5.闹钟(定时器)   6.未决信号集</p>
@@ -283,21 +283,21 @@
 <p>int execv(const char *path, char *const argv[]);</p>
 <p>int execvp(const char *file, char *const argv[]);</p>
 <p>int execve(const char *path, char *const argv[], char *const envp[]);</p>
-<h3 id="execlp函数"><a href="#execlp函数" class="headerlink" title="execlp函数"></a><strong>execlp函数</strong></h3><p>加载一个进程，借助PATH环境变量         </p>
+<h4 id="execlp函数"><a href="#execlp函数" class="headerlink" title="execlp函数"></a><strong>execlp函数</strong></h4><p>加载一个进程，借助PATH环境变量         </p>
 <p>int execlp(const char *file, const char *arg, …);        成功：无返回；失败：-1</p>
 <p>​    参数1：要加载的程序的名字。该函数需要配合PATH环境变量来使用，当PATH中所有目录搜索后没有参数1则出错返回。</p>
 <p>​    该函数通常用来调用系统程序。如：ls、date、cp、cat等命令。</p>
-<h3 id="execl函数"><a href="#execl函数" class="headerlink" title="execl函数"></a><strong>execl函数</strong></h3><p>加载一个进程， 通过 路径+程序名 来加载。 </p>
+<h4 id="execl函数"><a href="#execl函数" class="headerlink" title="execl函数"></a><strong>execl函数</strong></h4><p>加载一个进程， 通过 路径+程序名 来加载。 </p>
 <p>​    int execl(const char *path, const char *arg, …);        成功：无返回；失败：-1</p>
 <p>对比execlp，如加载”ls”命令带有-l，-F参数</p>
 <p>execlp(“ls”, “ls”, “-l”, “-F”, NULL);         使用程序名在PATH中搜索。</p>
 <p>execl(“/bin/ls”, “ls”, “-l”, “-F”, NULL);    使用参数1给出的绝对路径搜索。</p>
-<h3 id="execvp函数"><a href="#execvp函数" class="headerlink" title="execvp函数"></a><strong>execvp函数</strong></h3><p>加载一个进程，使用自定义环境变量env</p>
+<h4 id="execvp函数"><a href="#execvp函数" class="headerlink" title="execvp函数"></a><strong>execvp函数</strong></h4><p>加载一个进程，使用自定义环境变量env</p>
 <p>int execvp(const char *file, const char *argv[]);</p>
 <p>变参形式： ①… ② argv[]  (main函数也是变参函数，形式上等同于 int main(int argc, char *argv0, …)) </p>
 <p>变参终止条件：① NULL结尾 ② 固参指定</p>
 <p>execvp与execlp参数形式不同，原理一致。</p>
-<h3 id="exec函数族一般规律"><a href="#exec函数族一般规律" class="headerlink" title="exec函数族一般规律"></a><strong>exec函数族一般规律</strong></h3><p>exec函数一旦调用成功即执行新的程序，不返回。<strong>只有失败才返回，错误值-1</strong>。所以通常我们直接在exec函数调用后直接调用perror()和exit()，无需if判断。</p>
+<h4 id="exec函数族一般规律"><a href="#exec函数族一般规律" class="headerlink" title="exec函数族一般规律"></a><strong>exec函数族一般规律</strong></h4><p>exec函数一旦调用成功即执行新的程序，不返回。<strong>只有失败才返回，错误值-1</strong>。所以通常我们直接在exec函数调用后直接调用perror()和exit()，无需if判断。</p>
 <p>l (list)            命令行参数列表</p>
 <p>p (path)            搜素file时使用path变量</p>
 <p>v (vector)            使用命令行参数数组</p>
@@ -305,10 +305,10 @@
 <p>事实上，只有execve是真正的系统调用，其它五个函数最终都调用execve，所以execve在man手册第2节，其它函数在man手册第3节。这些函数之间的关系如下图所示。</p>
 <a rel=Linux系统编程-进程 href="/2019/09/10/Linux系统编程-进程/fork5.png" title="" data-fancybox="images"><img src="/2019/09/10/Linux系统编程-进程/fork5.png"></a>
 
-<h2 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a><strong>回收子进程</strong></h2><h3 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a><strong>孤儿进程</strong></h3><p>​    孤儿进程: 父进程先于子进程结束，则子进程成为孤儿进程，子进程的父进程成为init进程，称为init进程领养孤儿进程。</p>
-<h3 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a><strong>僵尸进程</strong></h3><p>僵尸进程: 进程终止，父进程尚未回收，子进程残留资源（PCB）存放于内核中，变成僵尸（Zombie）进程。  </p>
+<h2 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a><strong>回收子进程</strong></h2><h4 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a><strong>孤儿进程</strong></h4><p>​    孤儿进程: 父进程先于子进程结束，则子进程成为孤儿进程，子进程的父进程成为init进程，称为init进程领养孤儿进程。</p>
+<h4 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a><strong>僵尸进程</strong></h4><p>僵尸进程: 进程终止，父进程尚未回收，子进程残留资源（PCB）存放于内核中，变成僵尸（Zombie）进程。  </p>
 <p>特别注意，僵尸进程是不能使用kill命令清除掉的。因为kill命令只是用来终止进程的，而僵尸进程已经终止。思考！用什么办法可清除掉僵尸进程呢？</p>
-<h3 id="wait函数"><a href="#wait函数" class="headerlink" title="wait函数"></a><strong>wait函数</strong></h3><p>一个进程在终止时会关闭所有文件描述符，释放在用户空间分配的内存，但它的PCB还保留着，内核在其中保存了一些信息：如果是正常终止则保存着退出状态，如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait或waitpid获取这些信息，然后彻底清除掉这个进程。我们知道一个进程的退出状态可以在Shell中用特殊变量$?查看，因为Shell是它的父进程，当它终止时Shell调用wait或waitpid得到它的退出状态同时彻底清除掉这个进程。</p>
+<h4 id="wait函数"><a href="#wait函数" class="headerlink" title="wait函数"></a><strong>wait函数</strong></h4><p>一个进程在终止时会关闭所有文件描述符，释放在用户空间分配的内存，但它的PCB还保留着，内核在其中保存了一些信息：如果是正常终止则保存着退出状态，如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait或waitpid获取这些信息，然后彻底清除掉这个进程。我们知道一个进程的退出状态可以在Shell中用特殊变量$?查看，因为Shell是它的父进程，当它终止时Shell调用wait或waitpid得到它的退出状态同时彻底清除掉这个进程。</p>
 <p>父进程调用wait函数可以回收子进程终止信息。该函数有三个功能：</p>
 <p>① 阻塞等待子进程退出 </p>
 <p>② 回收子进程残留资源 </p>
@@ -323,7 +323,7 @@
 <p>*3.     WIFSTOPPED(status) 为非0 → 进程处于暂停状态</p>
 <p>​    WSTOPSIG(status) 如上宏为真，使用此宏 → 取得使进程暂停的那个信号的编号。</p>
 <p>​    WIFCONTINUED(status) 为真 → 进程暂停后已经继续运行</p>
-<h3 id="waitpid函数"><a href="#waitpid函数" class="headerlink" title="waitpid函数"></a><strong>waitpid函数</strong></h3><p>作用同wait，但可指定pid进程清理，可以不阻塞。</p>
+<h4 id="waitpid函数"><a href="#waitpid函数" class="headerlink" title="waitpid函数"></a><strong>waitpid函数</strong></h4><p>作用同wait，但可指定pid进程清理，可以不阻塞。</p>
 <p>​    <strong>pid_t waitpid(pid_t pid, int *status, in options);</strong>    成功：返回清理掉的子进程ID；失败：-1(无子进程)</p>
 <p>特殊参数和返回情况：</p>
 <p>参数pid： </p>
@@ -340,7 +340,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-09-10T04:03:45.634Z" itemprop="dateUpdated">2019-09-10 12:03:45</time>
+    最后更新时间：<time datetime="2019-09-10T07:52:28.611Z" itemprop="dateUpdated">2019-09-10 15:52:28</time>
 </span><br>
 
 
@@ -401,7 +401,14 @@
         
     </div>
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="prev">
+      <a href="/2019/09/10/Linux系统编程-进程间通信/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Linux系统编程-进程间通信</h4>
+      </a>
+    </div>
   
 
   
@@ -420,7 +427,7 @@
         <aside class="post-widget">
             <nav class="post-toc-wrap" id="post-toc">
                 <strong>目录</strong>
-                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#程序和进程"><span class="post-toc-number">1.</span> <span class="post-toc-text">程序和进程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发"><span class="post-toc-number">2.</span> <span class="post-toc-text">并发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单道程序设计"><span class="post-toc-number">3.</span> <span class="post-toc-text">单道程序设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多道程序设计"><span class="post-toc-number">4.</span> <span class="post-toc-text">多道程序设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU和MMU"><span class="post-toc-number">5.</span> <span class="post-toc-text">CPU和MMU</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程控制块PCB"><span class="post-toc-number">6.</span> <span class="post-toc-text">进程控制块PCB</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程状态"><span class="post-toc-number">7.</span> <span class="post-toc-text">进程状态</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#环境变量"><span class="post-toc-number">8.</span> <span class="post-toc-text">环境变量</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#PATH"><span class="post-toc-number">8.0.1.</span> <span class="post-toc-text">PATH</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#SHELL"><span class="post-toc-number">8.0.2.</span> <span class="post-toc-text">SHELL</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#TERM"><span class="post-toc-number">8.0.3.</span> <span class="post-toc-text">TERM</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#LANG"><span class="post-toc-number">8.0.4.</span> <span class="post-toc-text">LANG</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#HOME"><span class="post-toc-number">8.0.5.</span> <span class="post-toc-text">HOME</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getenv函数"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">getenv函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#setenv函数"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">setenv函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#unsetenv函数"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">unsetenv函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程控制"><span class="post-toc-number">9.</span> <span class="post-toc-text">进程控制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#fork函数"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">fork函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#循环创建n个子进程"><span class="post-toc-number">9.1.1.</span> <span class="post-toc-text">循环创建n个子进程</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getpid函数"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">getpid函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getppid函数"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">getppid函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getuid函数"><span class="post-toc-number">9.4.</span> <span class="post-toc-text">getuid函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getgid函数"><span class="post-toc-number">9.5.</span> <span class="post-toc-text">getgid函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#进程共享"><span class="post-toc-number">9.6.</span> <span class="post-toc-text">进程共享</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#gdb调试"><span class="post-toc-number">9.7.</span> <span class="post-toc-text">gdb调试</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#exec函数族"><span class="post-toc-number">10.</span> <span class="post-toc-text">exec函数族</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#execlp函数"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">execlp函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#execl函数"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">execl函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#execvp函数"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">execvp函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#exec函数族一般规律"><span class="post-toc-number">10.4.</span> <span class="post-toc-text">exec函数族一般规律</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#回收子进程"><span class="post-toc-number">11.</span> <span class="post-toc-text">回收子进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#孤儿进程"><span class="post-toc-number">11.1.</span> <span class="post-toc-text">孤儿进程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#僵尸进程"><span class="post-toc-number">11.2.</span> <span class="post-toc-text">僵尸进程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#wait函数"><span class="post-toc-number">11.3.</span> <span class="post-toc-text">wait函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#waitpid函数"><span class="post-toc-number">11.4.</span> <span class="post-toc-text">waitpid函数</span></a></li></ol></li></ol>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#程序和进程"><span class="post-toc-number">1.</span> <span class="post-toc-text">程序和进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#并发"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">并发</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#单道程序设计"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">单道程序设计</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多道程序设计"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">多道程序设计</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU和MMU"><span class="post-toc-number">2.</span> <span class="post-toc-text">CPU和MMU</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程控制块PCB"><span class="post-toc-number">3.</span> <span class="post-toc-text">进程控制块PCB</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程状态"><span class="post-toc-number">4.</span> <span class="post-toc-text">进程状态</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#环境变量"><span class="post-toc-number">5.</span> <span class="post-toc-text">环境变量</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#PATH"><span class="post-toc-number">5.0.1.</span> <span class="post-toc-text">PATH</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#SHELL"><span class="post-toc-number">5.0.2.</span> <span class="post-toc-text">SHELL</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#TERM"><span class="post-toc-number">5.0.3.</span> <span class="post-toc-text">TERM</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#LANG"><span class="post-toc-number">5.0.4.</span> <span class="post-toc-text">LANG</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#HOME"><span class="post-toc-number">5.0.5.</span> <span class="post-toc-text">HOME</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#getenv函数"><span class="post-toc-number">5.0.6.</span> <span class="post-toc-text">getenv函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#setenv函数"><span class="post-toc-number">5.0.7.</span> <span class="post-toc-text">setenv函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#unsetenv函数"><span class="post-toc-number">5.0.8.</span> <span class="post-toc-text">unsetenv函数</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程控制"><span class="post-toc-number">6.</span> <span class="post-toc-text">进程控制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#fork函数"><span class="post-toc-number">6.0.1.</span> <span class="post-toc-text">fork函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#循环创建n个子进程"><span class="post-toc-number">6.0.2.</span> <span class="post-toc-text">循环创建n个子进程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#getpid函数"><span class="post-toc-number">6.0.3.</span> <span class="post-toc-text">getpid函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#getppid函数"><span class="post-toc-number">6.0.4.</span> <span class="post-toc-text">getppid函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#getuid函数"><span class="post-toc-number">6.0.5.</span> <span class="post-toc-text">getuid函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#getgid函数"><span class="post-toc-number">6.0.6.</span> <span class="post-toc-text">getgid函数</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程共享"><span class="post-toc-number">7.</span> <span class="post-toc-text">进程共享</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#gdb调试"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">gdb调试</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#exec函数族"><span class="post-toc-number">8.</span> <span class="post-toc-text">exec函数族</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#execlp函数"><span class="post-toc-number">8.0.1.</span> <span class="post-toc-text">execlp函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#execl函数"><span class="post-toc-number">8.0.2.</span> <span class="post-toc-text">execl函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#execvp函数"><span class="post-toc-number">8.0.3.</span> <span class="post-toc-text">execvp函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#exec函数族一般规律"><span class="post-toc-number">8.0.4.</span> <span class="post-toc-text">exec函数族一般规律</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#回收子进程"><span class="post-toc-number">9.</span> <span class="post-toc-text">回收子进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#孤儿进程"><span class="post-toc-number">9.0.1.</span> <span class="post-toc-text">孤儿进程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#僵尸进程"><span class="post-toc-number">9.0.2.</span> <span class="post-toc-text">僵尸进程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#wait函数"><span class="post-toc-number">9.0.3.</span> <span class="post-toc-text">wait函数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#waitpid函数"><span class="post-toc-number">9.0.4.</span> <span class="post-toc-text">waitpid函数</span></a></li></ol></li></ol></li></ol>
             </nav>
             <div class="toc-bar"><div>
         </aside>
