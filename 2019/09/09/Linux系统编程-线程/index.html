@@ -206,13 +206,187 @@
 </ol>
 <p>察看LWP号：ps –Lf pid 查看指定线程的lwp号。</p>
 <a rel=Linux系统编程-线程 href="/2019/09/09/Linux系统编程-线程/p2.png" title="" data-fancybox="images"><img src="/2019/09/09/Linux系统编程-线程/p2.png"></a>
+
+<p>三级映射：进程PCB –&gt; 页目录(可看成数组，首地址位于PCB中) –&gt; 页表 –&gt; 物理页面 –&gt; 内存单元</p>
+<p>参考：《Linux内核源代码情景分析》 —-毛德操</p>
+<p>对于进程来说，相同的地址(同一个虚拟地址)在不同的进程中，反复使用而不冲突。原因是他们虽虚拟址一样，但，页目录、页表、物理页面各不相同。相同的虚拟址，映射到不同的物理页面内存单元，最终访问不同的物理页面。</p>
+<p>但！线程不同！两个线程具有各自独立的PCB，但共享同一个页目录，也就共享同一个页表和物理页面。所以两个PCB共享一个地址空间。</p>
+<p>​    实际上，无论是创建进程的fork，还是创建线程的pthread_create，底层实现都是调用同一个内核函数clone。</p>
+<p>​    如果复制对方的地址空间，那么就产出一个“进程”；如果共享对方的地址空间，就产生一个“线程”。</p>
+<p>​    因此：Linux内核是不区分进程和线程的。只在用户层面上进行区分。所以，线程所有操作函数 pthread_* 是库函数，而非系统调用。</p>
+<h3 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a><strong>线程共享资源</strong></h3><p>​    1.文件描述符表</p>
+<p>​    2.每种信号的处理方式</p>
+<p>​    3.当前工作目录</p>
+<p>​    4.用户ID和组ID</p>
+<p>​    5.内存地址空间 (.text/.data/.bss/heap/共享库)</p>
+<h3 id="线程非共享资源"><a href="#线程非共享资源" class="headerlink" title="线程非共享资源"></a><strong>线程非共享资源</strong></h3><p>​    1.线程id</p>
+<p>​    2.处理器现场和栈指针(内核栈)</p>
+<p>​    3.独立的栈空间(用户空间栈)</p>
+<p>​    4.errno变量</p>
+<p>​    5.信号屏蔽字</p>
+<p>​    6.调度优先级</p>
+<h3 id="线程优、缺点"><a href="#线程优、缺点" class="headerlink" title="线程优、缺点"></a><strong>线程优、缺点</strong></h3><p>​    优点：    1. 提高程序并发性    2. 开销小    3. 数据通信、共享数据方便</p>
+<p>​    缺点：    1. 库函数，不稳定    2. 调试、编写困难、gdb不支持    3. 对信号支持不好</p>
+<p>​    优点相对突出，缺点均不是硬伤。Linux下由于实现方法导致进程、线程差别不是很大。</p>
+<h2 id="线程控制原语"><a href="#线程控制原语" class="headerlink" title="线程控制原语"></a><strong>线程控制原语</strong></h2><h3 id="pthread-self函数"><a href="#pthread-self函数" class="headerlink" title="pthread_self函数"></a><strong>pthread_self函数</strong></h3><p>获取线程ID。其作用对应进程中 getpid() 函数。</p>
+<p>​    pthread_t pthread_self(void);    返回值：成功：0；    失败：无！</p>
+<p>​    线程ID：pthread_t类型，本质：在Linux下为无符号整数(%lu)，其他系统中可能是结构体实现</p>
+<p>​    线程ID是进程内部，识别标志。(两个进程间，线程ID允许相同)</p>
+<p>​    注意：不应使用全局变量 pthread_t tid，在子线程中通过pthread_create传出参数来获取线程ID，而应使用pthread_self。</p>
+<h3 id="pthread-create函数"><a href="#pthread-create函数" class="headerlink" title="pthread_create函数"></a><strong>pthread_create函数</strong></h3><p>创建一个新线程。        其作用，对应进程中fork() 函数。</p>
+<p>​    int pthread_create(pthread_t <em>thread, const pthread_attr_t *attr, void *(</em>start_routine) (void *), void *arg);</p>
+<p>​    返回值：成功：0；    失败：错误号    —–Linux环境下，所有线程特点，失败均直接返回错误号。</p>
+<p>​    参数：    </p>
+<p>​    pthread_t：当前Linux中可理解为：typedef  unsigned long int  pthread_t;</p>
+<p>​    参数1：传出参数，保存系统为我们分配好的线程ID</p>
+<p>​    参数2：通常传NULL，表示使用线程默认属性。若想使用具体属性也可以修改该参数。</p>
+<p>​    参数3：函数指针，指向线程主函数(线程体)，该函数运行结束，则线程结束。</p>
+<p>​    参数4：线程主函数执行期间所使用的参数。</p>
+<p>在一个线程中调用pthread_create()创建新的线程后，当前线程从pthread_create()返回继续往下执行，而新的线程所执行的代码由我们传给pthread_create的函数指针start_routine决定。start_routine函数接收一个参数，是通过pthread_create的arg参数传递给它的，该参数的类型为void *，这个指针按什么类型解释由调用者自己定义。start_routine的返回值类型也是void *，这个指针的含义同样由调用者自己定义。start_routine返回时，这个线程就退出了，其它线程可以调用pthread_join得到start_routine的返回值，类似于父进程调用wait(2)得到子进程的退出状态，稍后详细介绍pthread_join。</p>
+<p>pthread_create成功返回后，新创建的线程的id被填写到thread参数所指向的内存单元。我们知道进程id的类型是pid_t，每个进程的id在整个系统中是唯一的，调用getpid(2)可以获得当前进程的id，是一个正整数值。线程id的类型是thread_t，它只在当前进程中保证是唯一的，在不同的系统中thread_t这个类型有不同的实现，它可能是一个整数值，也可能是一个结构体，也可能是一个地址，所以不能简单地当成整数用printf打印，调用pthread_self(3)可以获得当前线程的id。</p>
+<p>attr参数表示线程属性，本节不深入讨论线程属性，所有代码例子都传NULL给attr参数，表示线程属性取缺省值，感兴趣的读者可以参考APUE。</p>
+<p>由于pthread_create的错误码不保存在errno中，因此不能直接用perror(3)打印错误信息，可以先用strerror(3)把错误码转换成错误信息再打印。如果任意一个线程调用了exit或_exit，则整个进程的所有线程都终止，由于从main函数return也相当于调用exit，为了防止新创建的线程还没有得到执行就终止，我们在main函数return之前延时1秒，这只是一种权宜之计，即使主线程等待1秒，内核也不一定会调度新创建的线程执行，下一节我们会看到更好的办法。                                                                                               </p>
+<p>拓展思考：将pthread_create函数参4修改为(void <em>)&amp;i, 将线程主函数内改为 i=</em>((int *)arg) 是否可以？        </p>
+<h4 id="线程与共享"><a href="#线程与共享" class="headerlink" title="线程与共享"></a><strong>线程与共享</strong></h4><p><strong>线程间共享全局变量**</strong>！**</p>
+<p>【<strong>牢记</strong>】：线程默认共享数据段、代码段等地址空间，常用的是全局变量。而进程不共享全局变量，只能借助mmap。</p>
+<h3 id="pthread-exit函数"><a href="#pthread-exit函数" class="headerlink" title="pthread_exit函数"></a><strong>pthread_exit函数</strong></h3><p>将单个线程退出</p>
+<p>​    void pthread_exit(void *retval);    参数：retval表示线程退出状态，通常传NULL</p>
+<p>思考：使用exit将指定线程退出，可以吗？                                            </p>
+<p>​    结论：线程中，禁止使用exit函数，会导致进程内所有线程全部退出。</p>
+<p>​    在不添加sleep控制输出顺序的情况下。pthread_create在循环中，几乎瞬间创建5个线程，但只有第1个线程有机会输出（或者第2个也有，也可能没有，取决于内核调度）如果第3个线程执行了exit，将整个进程退出了，所以全部线程退出了。</p>
+<p>​    所以，多线程环境中，应尽量少用，或者不使用exit函数，取而代之使用pthread_exit函数，将单个线程退出。任何线程里exit导致进程退出，其他线程未工作结束，主控线程退出时不能return或exit。</p>
+<p>另注意，pthread_exit或者return返回的指针所指向的内存单元必须是全局的或者是用malloc分配的，不能在线程函数的栈上分配，因为当其它线程得到这个返回指针时线程函数已经退出了。</p>
+<p>【练习】：编写多线程程序，总结exit、return、pthread_exit各自退出效果。</p>
+<p>​    return：返回到调用者那里去。</p>
+<p>​    pthread_exit()：将调用该函数的线程            </p>
+<p>​    exit: 将进程退出。</p>
+<h3 id="pthread-join函数"><a href="#pthread-join函数" class="headerlink" title="pthread_join函数"></a><strong>pthread_join函数</strong></h3><p>阻塞等待线程退出，获取线程退出状态        其作用，对应进程中 waitpid() 函数。</p>
+<p>​    int pthread_join(pthread_t thread, void **retval); 成功：0；失败：错误号</p>
+<p>​    参数：thread：线程ID （【注意】：不是指针）；retval：存储线程结束状态。</p>
+<p>​    对比记忆：</p>
+<p>​        进程中：main返回值、exit参数–&gt;int；等待子进程结束 wait 函数参数–&gt;int *</p>
+<p>​        线程中：线程主函数返回值、pthread_exit–&gt;void <em>；等待线程结束 pthread_join 函数参数–&gt;void *</em></p>
+<p>调用该函数的线程将挂起等待，直到id为thread的线程终止。thread线程以不同的方法终止，通过pthread_join得到的终止状态是不同的，总结如下：</p>
+<ol>
+<li><p>如果thread线程通过return返回，retval所指向的单元里存放的是thread线程函数的返回值。</p>
+</li>
+<li><p>如果thread线程被别的线程调用pthread_cancel异常终止掉，retval所指向的单元里存放的是常数PTHREAD_CANCELED。</p>
+</li>
+<li><p>如果thread线程是自己调用pthread_exit终止的，retval所指向的单元存放的是传给pthread_exit的参数。</p>
+</li>
+<li><p>如果对thread线程的终止状态不感兴趣，可以传NULL给retval参数。</p>
+</li>
+</ol>
+<h3 id="pthread-detach函数"><a href="#pthread-detach函数" class="headerlink" title="pthread_detach函数"></a><strong>pthread_detach函数</strong></h3><p>实现线程分离</p>
+<p>​    int pthread_detach(pthread_t thread);    成功：0；失败：错误号</p>
+<p>​    线程分离状态：指定该状态，线程主动与主控线程断开关系。线程结束后，其退出状态不由其他线程获取，而直接自己自动释放。网络、多线程服务器常用。</p>
+<p>​    进程若有该机制，将不会产生僵尸进程。僵尸进程的产生主要由于进程死后，大部分资源被释放，一点残留资源仍存于系统中，导致内核认为该进程仍存在。</p>
+<p>​    也可使用 pthread_create函数参2(线程属性)来设置线程分离。</p>
+<p>一般情况下，线程终止后，其终止状态一直保留到其它线程调用pthread_join获取它的状态为止。但是线程也可以被置为detach状态，<strong>这样的线程一旦终止就立刻回收它占用的所有资源，而不保留终止状态。</strong>不能对一个已经处于detach状态的线程调用pthread_join，这样的调用将返回EINVAL错误。也就是说，如果已经对一个线程调用了pthread_detach就不能再调用pthread_join了。</p>
+<h3 id="pthread-cancel函数"><a href="#pthread-cancel函数" class="headerlink" title="pthread_cancel函数"></a><strong>pthread_cancel函数</strong></h3><p>杀死(取消)线程            其作用，对应进程中 kill() 函数。</p>
+<p>​    int pthread_cancel(pthread_t thread);    成功：0；失败：错误号</p>
+<p>​    【注意】：线程的取消并不是实时的，而有一定的延时。需要等待线程到达某个取消点(检查点)。</p>
+<p>​    类似于玩游戏存档，必须到达指定的场所(存档点，如：客栈、仓库、城里等)才能存储进度。杀死线程也不是立刻就能完成，必须要到达取消点。</p>
+<p>​    取消点：是线程检查是否被取消，并按请求进行动作的一个位置。通常是一些系统调用creat，open，pause，close，read，write….. 执行命令man 7 pthreads可以查看具备这些取消点的系统调用列表。也可参阅 APUE.12.7 取消选项小节。</p>
+<p>可粗略认为一个系统调用(进入内核)即为一个取消点。如线程中没有取消点，可以通过调用pthreestcancel函数自行设置一个取消点。</p>
+<p>被取消的线程，    退出值定义在Linux的pthread库中。常数PTHREAD_CANCELED的值是-1。可在头文件pthread.h中找到它的定义：<strong>#define PTHREAD_CANCELED ((void *) -1)**</strong>。**因此当我们对一个已经被取消的线程使用pthread_join回收时，得到的返回值为-1。</p>
+<h4 id="终止线程方式"><a href="#终止线程方式" class="headerlink" title="终止线程方式"></a><strong>终止线程方式</strong></h4><p>总结：终止某个线程而不终止整个进程，有三种方法：</p>
+<ol>
+<li><p>从线程主函数return。这种方法对主控线程不适用，从main函数return相当于调用exit。</p>
+</li>
+<li><p>一个线程可以调用pthread_cancel终止同一进程中的另一个线程。</p>
+</li>
+<li><p>线程可以调用pthread_exit终止自己。</p>
+</li>
+</ol>
+<h3 id="pthread-equal函数"><a href="#pthread-equal函数" class="headerlink" title="pthread_equal函数"></a><strong>pthread_equal函数</strong></h3><p>比较两个线程ID是否相等。</p>
+<p>​    int pthread_equal(pthread_t t1, pthread_t t2);</p>
+<p>​    有可能Linux在未来线程ID pthread_t 类型被修改为结构体实现。</p>
+<h3 id="控制原语对比"><a href="#控制原语对比" class="headerlink" title="控制原语对比"></a><strong>控制原语对比</strong></h3><p>​    进程            线程</p>
+<p>​    fork            pthread_create</p>
+<p>​    exit            pthread_exit</p>
+<p>​    wait            pthread_join</p>
+<p>​    kill            pthread_cancel</p>
+<p>​    getpid        pthread_self        命名空间</p>
+<h2 id="线程属性"><a href="#线程属性" class="headerlink" title="线程属性"></a><strong>线程属性</strong></h2><p>本节作为指引性介绍，linux下线程的属性是可以根据实际项目需要，进行设置，之前我们讨论的线程都是采用线程的默认属性，默认属性已经可以解决绝大多数开发时遇到的问题。如我们对程序的性能提出更高的要求那么需要设置线程属性，比如可以通过设置线程栈的大小来降低内存的使用，增加最大线程个数。</p>
+<p>typedef struct</p>
+<p>{</p>
+<p>int                     etachstate;     //线程的分离状态</p>
+<p>int                     schedpolicy;     //线程调度策略</p>
+<p>struct sched_param    schedparam;     //线程的调度参数</p>
+<p>int                     inheritsched;     //线程的继承性</p>
+<p>int                     scope;         //线程的作用域</p>
+<p>size_t                 guardsize;     //线程栈末尾的警戒缓冲区大小</p>
+<p>int                    stackaddr_set; //线程的栈设置</p>
+<p>void*                 stackaddr;     //线程栈的位置</p>
+<p>size_t                 stacksize;     //线程栈的大小</p>
+<p>} pthread_attr_t; </p>
+<p>主要结构体成员：</p>
+<p>​    1. 线程分离状态</p>
+<p>​    2. 线程栈大小（默认平均分配）</p>
+<p>​    3. 线程栈警戒缓冲区大小（位于栈末尾）                                    参 APUE.12.3 线程属性</p>
+<p>属性值不能直接设置，须使用相关函数进行操作，初始化的函数为pthread_attr_init，这个函数必须在pthread_create函数之前调用。之后须用pthread_attr_destroy函数来释放资源。</p>
+<p>线程属性主要包括如下属性：作用域（scope）、栈尺寸（stack size）、栈地址（stack address）、优先级（priority）、分离的状态（detached state）、调度策略和参数（scheduling policy and parameters）。默认的属性为非绑定、非分离、缺省的堆栈、与父进程同样级别的优先级。</p>
+<h3 id="线程属性初始化"><a href="#线程属性初始化" class="headerlink" title="线程属性初始化"></a><strong>线程属性初始化</strong></h3><p>注意：应先初始化线程属性，再pthread_create创建线程</p>
+<p>初始化线程属性</p>
+<p>int pthread_attr_init(pthread_attr_t *attr); 成功：0；失败：错误号</p>
+<p>销毁线程属性所占用的资源</p>
+<p>int pthread_attr_destroy(pthread_attr_t *attr); 成功：0；失败：错误号</p>
+<h3 id="线程的分离状态"><a href="#线程的分离状态" class="headerlink" title="线程的分离状态"></a><strong>线程的分离状态</strong></h3><p>线程的分离状态决定一个线程以什么样的方式来终止自己。</p>
+<p>非分离状态：线程的默认属性是非分离状态，这种情况下，原有的线程等待创建的线程结束。只有当pthread_join()函数返回时，创建的线程才算终止，才能释放自己占用的系统资源。</p>
+<p>分离状态：分离线程没有被其他的线程所等待，自己运行结束了，线程也就终止了，马上释放系统资源。应该根据自己的需要，选择适当的分离状态。</p>
+<p>线程分离状态的函数：</p>
+<p>设置线程属性，分离or非分离</p>
+<p>int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate); </p>
+<p>获取程属性，分离or非分离</p>
+<pre><code>int pthread_attr_getdetachstate(pthread_attr_t *attr, int *detachstate); </code></pre><p>​    参数：    attr：已初始化的线程属性</p>
+<p>detachstate：    PTHREAD_CREATE_DETACHED（分离线程）</p>
+<p>PTHREAD _CREATE_JOINABLE（非分离线程）</p>
+<p>这里要注意的一点是，如果设置一个线程为分离线程，而这个线程运行又非常快，它很可能在pthread_create函数返回之前就终止了，它终止以后就可能将线程号和系统资源移交给其他的线程使用，这样调用pthread_create的线程就得到了错误的线程号。要避免这种情况可以采取一定的同步措施，最简单的方法之一是可以在被创建的线程里调用pthread_cond_timedwait函数，让这个线程等待一会儿，留出足够的时间让函数pthread_create返回。设置一段等待时间，是在多线程编程里常用的方法。但是注意不要使用诸如wait()之类的函数，它们是使整个进程睡眠，并不能解决线程同步的问题。</p>
+<h3 id="线程的栈地址"><a href="#线程的栈地址" class="headerlink" title="线程的栈地址"></a><strong>线程的栈地址</strong></h3><p>POSIX.1定义了两个常量_POSIX_THREAD_ATTR_STACKADDR 和_POSIX_THREAD_ATTR_STACKSIZE检测系统是否支持栈属性。也可以给sysconf函数传递_SC_THREAD_ATTR_STACKADDR或 _SC_THREAD_ATTR_STACKSIZE来进行检测。</p>
+<p>当进程栈地址空间不够用时，指定新建线程使用由malloc分配的空间作为自己的栈空间。通过pthread_attr_setstack和pthread_attr_getstack两个函数分别设置和获取线程的栈地址。</p>
+<p>int pthread_attr_setstack(pthread_attr_t *attr, void *stackaddr, size_t stacksize); 成功：0；失败：错误号</p>
+<p>int pthread_attr_getstack(pthread_attr_t <em>attr, void *</em>stackaddr, size_t *stacksize); 成功：0；失败：错误号</p>
+<p>参数：    attr：指向一个线程属性的指针</p>
+<p>stackaddr：返回获取的栈地址</p>
+<p>stacksize：返回获取的栈大小</p>
+<h3 id="线程的栈大小"><a href="#线程的栈大小" class="headerlink" title="线程的栈大小"></a><strong>线程的栈大小</strong></h3><p>当系统中有很多线程时，可能需要减小每个线程栈的默认大小，防止进程的地址空间不够用，当线程调用的函数会分配很大的局部变量或者函数调用层次很深时，可能需要增大线程栈的默认大小。</p>
+<p>函数pthread_attr_getstacksize和 pthread_attr_setstacksize提供设置。</p>
+<p>int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize); 成功：0；失败：错误号</p>
+<p>int pthread_attr_getstacksize(pthread_attr_t *attr, size_t *stacksize); 成功：0；失败：错误号</p>
+<p>参数：    attr：指向一个线程属性的指针</p>
+<p>stacksize：返回线程的堆栈大小</p>
+<h3 id="线程属性控制示例"><a href="#线程属性控制示例" class="headerlink" title="线程属性控制示例"></a><strong>线程属性控制示例</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line"></span><br><span class="line">#define SIZE 0x100000</span><br><span class="line"></span><br><span class="line">void *th_fun(void *arg)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">​	while (1) </span><br><span class="line"></span><br><span class="line">​		sleep(1);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">​	pthread_t tid;</span><br><span class="line"></span><br><span class="line">​	int err, detachstate, i = 1;</span><br><span class="line"></span><br><span class="line">​	pthread_attr_t attr;</span><br><span class="line"></span><br><span class="line">​	size_t stacksize;</span><br><span class="line"></span><br><span class="line">​	void *stackaddr;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">​	pthread_attr_init(&amp;attr);		</span><br><span class="line"></span><br><span class="line">​	pthread_attr_getstack(&amp;attr, &amp;stackaddr, &amp;stacksize);</span><br><span class="line"></span><br><span class="line">​	pthread_attr_getdetachstate(&amp;attr, &amp;detachstate);</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">​	if (detachstate == PTHREAD_CREATE_DETACHED)</span><br><span class="line"></span><br><span class="line">​		printf(&quot;thread detached\n&quot;);</span><br><span class="line"></span><br><span class="line">​	else if (detachstate == PTHREAD_CREATE_JOINABLE)</span><br><span class="line"></span><br><span class="line">​		printf(&quot;thread join\n&quot;);</span><br><span class="line"></span><br><span class="line">​	else</span><br><span class="line"></span><br><span class="line">​		printf(&quot;thread unknown\n&quot;);</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">​	pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_DETACHED);</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">​	while (1) &#123;</span><br><span class="line"></span><br><span class="line">​		stackaddr = malloc(SIZE);</span><br><span class="line"></span><br><span class="line">​		if (stackaddr == NULL) &#123;</span><br><span class="line"></span><br><span class="line">​			perror(&quot;malloc&quot;);</span><br><span class="line"></span><br><span class="line">​			exit(1);</span><br><span class="line"></span><br><span class="line">​		&#125;</span><br><span class="line"></span><br><span class="line">​		stacksize = SIZE;</span><br><span class="line"></span><br><span class="line">​		pthread_attr_setstack(&amp;attr, stackaddr, stacksize);</span><br><span class="line"></span><br><span class="line">​		err = pthread_create(&amp;tid, &amp;attr, th_fun, NULL);</span><br><span class="line"></span><br><span class="line">​		if (err != 0) &#123;</span><br><span class="line"></span><br><span class="line">​			printf(&quot;%s\n&quot;, strerror(err));</span><br><span class="line"></span><br><span class="line">​			exit(1);</span><br><span class="line"></span><br><span class="line">​		&#125;</span><br><span class="line"></span><br><span class="line">​		printf(&quot;%d\n&quot;, i++);</span><br><span class="line"></span><br><span class="line">​	&#125;</span><br><span class="line"></span><br><span class="line">​	pthread_attr_destroy(&amp;attr);</span><br><span class="line"></span><br><span class="line">​	return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id><a href="#" class="headerlink" title=" "></a> </h3><h2 id="NPTL"><a href="#NPTL" class="headerlink" title="NPTL"></a><strong>NPTL</strong></h2><p>1.察看当前pthread库版本getconf GNU_LIBPTHREAD_VERSION</p>
+<p>2.NPTL实现机制(POSIX)，Native POSIX Thread Library</p>
+<p>3.使用线程库时gcc指定 –lpthread</p>
+<h2 id="线程使用注意事项"><a href="#线程使用注意事项" class="headerlink" title="线程使用注意事项"></a><strong>线程使用注意事项</strong></h2><ol>
+<li><p>主线程退出其他线程不退出，主线程应调用pthread_exit</p>
+</li>
+<li><p>避免僵尸线程</p>
+</li>
+</ol>
+<p>pthread_join</p>
+<p>pthread_detach</p>
+<p>pthread_create指定分离属性</p>
+<p>被join线程可能在join函数返回前就释放完自己的所有内存资源，所以不应当返回被回收线程栈中的值;</p>
+<ol start="3">
+<li><p>malloc和mmap申请的内存可以被其他线程释放 </p>
+</li>
+<li><p>应避免在多线程模型中调用fork除非，马上exec，子进程中只有调用fork的线程存在，其他线程在子进程中均pthread_exit</p>
+</li>
+<li><p>信号的复杂语义很难和多线程共存，应避免在多线程引入信号机制</p>
+</li>
+</ol>
+
         </div>
         
 <blockquote class="post-copyright">
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-09-10T08:25:29.980Z" itemprop="dateUpdated">2019-09-10 16:25:29</time>
+    最后更新时间：<time datetime="2019-09-16T08:29:59.955Z" itemprop="dateUpdated">2019-09-16 16:29:59</time>
 </span><br>
 
 
@@ -299,7 +473,7 @@
         <aside class="post-widget">
             <nav class="post-toc-wrap" id="post-toc">
                 <strong>目录</strong>
-                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">线程概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux内核线程实现原理"><span class="post-toc-number">2.</span> <span class="post-toc-text">Linux内核线程实现原理</span></a></li></ol>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">线程概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux内核线程实现原理"><span class="post-toc-number">2.</span> <span class="post-toc-text">Linux内核线程实现原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程共享资源"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">线程共享资源</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程非共享资源"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">线程非共享资源</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程优、缺点"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">线程优、缺点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程控制原语"><span class="post-toc-number">3.</span> <span class="post-toc-text">线程控制原语</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-self函数"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">pthread_self函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-create函数"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">pthread_create函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#线程与共享"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">线程与共享</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-exit函数"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">pthread_exit函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-join函数"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">pthread_join函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-detach函数"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">pthread_detach函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-cancel函数"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">pthread_cancel函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#终止线程方式"><span class="post-toc-number">3.6.1.</span> <span class="post-toc-text">终止线程方式</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pthread-equal函数"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">pthread_equal函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#控制原语对比"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">控制原语对比</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程属性"><span class="post-toc-number">4.</span> <span class="post-toc-text">线程属性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程属性初始化"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">线程属性初始化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的分离状态"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">线程的分离状态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的栈地址"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">线程的栈地址</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的栈大小"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">线程的栈大小</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程属性控制示例"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">线程属性控制示例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#null"><span class="post-toc-number">4.6.</span> <span class="post-toc-text"> </span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#NPTL"><span class="post-toc-number">5.</span> <span class="post-toc-text">NPTL</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程使用注意事项"><span class="post-toc-number">6.</span> <span class="post-toc-text">线程使用注意事项</span></a></li></ol>
             </nav>
             <div class="toc-bar"><div>
         </aside>
