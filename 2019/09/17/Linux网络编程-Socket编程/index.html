@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+    <title>Linux网络编程-Socket编程 | 庸的博客 | 爱代码,爱生活~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    <link rel="shortcut icon" href="/img/yong.png">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.4">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	false,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}'),
+            d: JSON.parse('{"app_id":null}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
+    
+</head>
+
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/yong.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">HSR</h5>
+          <a href="mailto:461467948@qq.com" title="461467948@qq.com" class="mail">
+            
+              <span>4</span>
+            
+              <span>6</span>
+            
+              <span>1</span>
+            
+              <span>4</span>
+            
+              <span>6</span>
+            
+              <span>7</span>
+            
+              <span>9</span>
+            
+              <span>4</span>
+            
+              <span>8</span>
+            
+              <span>@</span>
+            
+              <span>q</span>
+            
+              <span>q</span>
+            
+              <span>.</span>
+            
+              <span>c</span>
+            
+              <span>o</span>
+            
+              <span>m</span>
+            
+          </a>
+        </hgroup>
+        
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/HonourShu" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+        </ul>
+        
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>Linux网络编程-Socket编程</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">Linux网络编程-Socket编程</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-09-17T13:07:05.000Z" itemprop="datePublished" class="page-time">
+  2019-09-17
+</time>
+
+
+            
+        </h5>
+        
+    </div>
+    
+
+</header>
+
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+
+<div class="container body-wrap">
+    <article id="post-Linux网络编程-Socket编程"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">Linux网络编程-Socket编程</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-09-17 21:07:05" datetime="2019-09-17T13:07:05.000Z"  itemprop="datePublished">2019-09-17</time>
+
+            
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <h2 id="套接字概念"><a href="#套接字概念" class="headerlink" title="套接字概念"></a><strong>套接字概念</strong></h2><p>Socket本身有“插座”的意思，在Linux环境下，用于表示进程间网络通信的特殊文件类型。本质为内核借助缓冲区形成的伪文件。</p>
+<p>既然是文件，那么理所当然的，我们可以使用文件描述符引用套接字。与管道类似的，Linux系统将其封装成文件的目的是为了统一接口，使得读写套接字和读写文件的操作一致。区别是管道主要应用于本地进程间通信，而套接字多应用于网络进程间数据的传递。</p>
+<p>套接字的内核实现较为复杂，不宜在学习初期深入学习。</p>
+<p>在TCP/IP协议中，“IP地址+TCP或UDP端口号”唯一标识网络通讯中的一个进程。“IP地址+端口号”就对应一个socket。欲建立连接的两个进程各自有一个socket来标识，那么这两个socket组成的socket pair就唯一标识一个连接。因此可以用Socket来描述网络连接的一对一关系。</p>
+<p>套接字通信原理如下图所示：</p>
+<a rel=Linux网络编程-Socket编程 href="/2019/09/17/Linux网络编程-Socket编程/socket1.png" title="" data-fancybox="images"><img src="/2019/09/17/Linux网络编程-Socket编程/socket1.png"></a>  
+
+<p>套接字通讯原理示意</p>
+<p><strong>在网络通信中，套接字一定是成对出现的。</strong>一端的发送缓冲区对应对端的接收缓冲区。我们使用同一个文件描述符索发送缓冲区和接收缓冲区。</p>
+<p>TCP/IP协议最早在BSD UNIX上实现，为TCP/IP协议设计的应用层编程接口称为socket API。本章的主要内容是socket API，主要介绍TCP协议的函数接口，最后介绍UDP协议和UNIX Domain Socket的函数接口。</p>
+<a rel=Linux网络编程-Socket编程 href="/2019/09/17/Linux网络编程-Socket编程/socket2.png" title="" data-fancybox="images"><img src="/2019/09/17/Linux网络编程-Socket编程/socket2.png"></a>  
+
+<p>网络编程接口</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a><strong>预备知识</strong></h2><h3 id="网络字节序"><a href="#网络字节序" class="headerlink" title="网络字节序"></a><strong>网络字节序</strong></h3><p>我们已经知道，内存中的多字节数据相对于内存地址有大端和小端之分，磁盘文件中的多字节数据相对于文件中的偏移地址也有大端小端之分。网络数据流同样有大端小端之分，那么如何定义网络数据流的地址呢？发送主机通常将发送缓冲区中的数据按内存地址从低到高的顺序发出，接收主机把从网络上接到的字节依次保存在接收缓冲区中，也是按内存地址从低到高的顺序保存，因此，网络数据流的地址应这样规定：先发出的数据是低地址，后发出的数据是高地址。</p>
+<p>TCP/IP协议规定，网络数据流应采用大端字节序，即低地址高字节。例如上一节的UDP段格式，地址0-1是16位的源端口号，如果这个端口号是1000（0x3e8），则地址0是0x03，地址1是0xe8，也就是先发0x03，再发0xe8，这16位在发送主机的缓冲区中也应该是低地址存0x03，高地址存0xe8。但是，如果发送主机是小端字节序的，这16位被解释成0xe803，而不是1000。因此，发送主机把1000填到发送缓冲区之前需要做字节序的转换。同样地，接收主机如果是小端字节序的，接到16位的源端口号也要做字节序的转换。如果主机是大端字节序的，发送和接收都不需要做转换。同理，32位的IP地址也要考虑网络字节序和主机字节序的问题。</p>
+<p>为使网络程序具有可移植性，使同样的C代码在大端和小端计算机上编译后都能正常运行，可以调用以下库函数做<strong>网络字节序和主机字节序的转换</strong>。</p>
+<p>#include &lt;arpa/inet.h&gt;</p>
+<p>uint32_t htonl(uint32_t hostlong);</p>
+<p>uint16_t htons(uint16_t hostshort);</p>
+<p>uint32_t ntohl(uint32_t netlong);</p>
+<p>uint16_t ntohs(uint16_t netshort);</p>
+<p>h表示host，n表示network，l表示32位长整数，s表示16位短整数。</p>
+<p>如果主机是小端字节序，这些函数将参数做相应的大小端转换然后返回，如果主机是大端字节序，这些函数不做转换，将参数原封不动地返回。</p>
+<h3 id="IP地址转换函数"><a href="#IP地址转换函数" class="headerlink" title="IP地址转换函数"></a><strong>IP地址转换函数</strong></h3><p>早期：</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>#include &lt;netinet/in.h&gt;</p>
+<p>#include &lt;arpa/inet.h&gt;</p>
+<p>int inet_aton(const char *cp, struct in_addr *inp);</p>
+<p>in_addr_t inet_addr(const char *cp);</p>
+<p>char *inet_ntoa(struct in_addr in);</p>
+<p>只能处理IPv4的ip地址</p>
+<p>不可重入函数</p>
+<p>注意参数是struct in_addr</p>
+<p>现在：</p>
+<p>​    #include &lt;arpa/inet.h&gt;</p>
+<p>​    int inet_pton(int af, const char *src, void *dst);</p>
+<p>​    const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);</p>
+<p>支持IPv4和IPv6</p>
+<p>可重入函数</p>
+<p>其中inet_pton和inet_ntop不仅可以转换IPv4的in_addr，还可以转换IPv6的in6_addr。</p>
+<p>因此函数接口是void *addrptr。</p>
+<h3 id="sockaddr数据结构"><a href="#sockaddr数据结构" class="headerlink" title="sockaddr数据结构"></a><strong>sockaddr数据结构</strong></h3><p>strcut sockaddr 很多网络编程函数诞生早于IPv4协议，那时候都使用的是sockaddr结构体,为了向前兼容，现在sockaddr退化成了（void *）的作用，传递一个地址给函数，至于这个函数是sockaddr_in还是sockaddr_in6，由地址族确定，然后函数内部再强制类型转化为所需的地址类型。</p>
+<a rel=Linux网络编程-Socket编程 href="/2019/09/17/Linux网络编程-Socket编程/socket3.png" title="" data-fancybox="images"><img src="/2019/09/17/Linux网络编程-Socket编程/socket3.png"></a>  
+
+<p>sockaddr数据结构</p>
+<p>struct sockaddr {</p>
+<p>​    sa_family_t sa_family;         /* address family, AF_xxx */</p>
+<p>​    char sa_data[14];            /* 14 bytes of protocol address */</p>
+<p>};</p>
+<p>使用 sudo grep -r “struct sockaddr_in {“  /usr 命令可查看到struct sockaddr_in结构体的定义。一般其默认的存储位置：/usr/include/linux/in.h 文件中。</p>
+<p>struct sockaddr_in {</p>
+<p>​    __kernel_sa_family_t sin_family;             /* Address family */      地址结构类型</p>
+<p>​    __be16 sin_port;                             /* Port number */        端口号</p>
+<p>​    struct in_addr sin_addr;                    /* Internet address */    IP地址</p>
+<p>​    /* Pad to size of `struct sockaddr’. */</p>
+<p>​    unsigned char <strong>pad[</strong>SOCK_SIZE__ - sizeof(short int) -</p>
+<p>​    sizeof(unsigned short int) - sizeof(struct in_addr)];</p>
+<p>};</p>
+<p>struct in_addr {                        /* Internet address. */</p>
+<p>​    __be32 s_addr;</p>
+<p>};</p>
+<p>struct sockaddr_in6 {</p>
+<p>​    unsigned short int sin6_family;         /* AF_INET6 */</p>
+<p>​    __be16 sin6_port;                     /* Transport layer port # */</p>
+<p>​    __be32 sin6_flowinfo;                 /* IPv6 flow information */</p>
+<p>​    struct in6_addr sin6_addr;            /* IPv6 address */</p>
+<p>​    __u32 sin6_scope_id;                 /* scope id (new in RFC2553) */</p>
+<p>};</p>
+<p>struct in6_addr {</p>
+<p>​    union {</p>
+<p>​        __u8 u6_addr8[16];</p>
+<p>​        __be16 u6_addr16[8];</p>
+<p>​        __be32 u6_addr32[4];</p>
+<p>​    } in6_u;</p>
+<p>​    #define s6_addr         in6_u.u6_addr8</p>
+<p>​    #define s6_addr16     in6_u.u6_addr16</p>
+<p>​    #define s6_addr32         in6_u.u6_addr32</p>
+<p>};</p>
+<p>#define UNIX_PATH_MAX 108</p>
+<p>​    struct sockaddr_un {</p>
+<p>​    __kernel_sa_family_t sun_family;     /* AF_UNIX */</p>
+<p>​    char sun_path[UNIX_PATH_MAX];     /* pathname */</p>
+<p>};</p>
+<p>Pv4和IPv6的地址格式定义在netinet/in.h中，IPv4地址用sockaddr_in结构体表示，包括16位端口号和32位IP地址，IPv6地址用sockaddr_in6结构体表示，包括16位端口号、128位IP地址和一些控制字段。UNIX Domain Socket的地址格式定义在sys/un.h中，用sock-addr_un结构体表示。各种socket地址结构体的开头都是相同的，前16位表示整个结构体的长度（并不是所有UNIX的实现都有长度字段，如Linux就没有），后16位表示地址类型。IPv4、IPv6和Unix Domain Socket的地址类型分别定义为常数AF_INET、AF_INET6、AF_UNIX。这样，只要取得某种sockaddr结构体的首地址，不需要知道具体是哪种类型的sockaddr结构体，就可以根据地址类型字段确定结构体中的内容。因此，socket API可以接受各种类型的sockaddr结构体指针做参数，例如bind、accept、connect等函数，这些函数的参数应该设计成void *类型以便接受各种类型的指针，但是sock API的实现早于ANSI C标准化，那时还没有void *类型，因此这些函数的参数都用struct sockaddr *类型表示，在传递参数之前要强制类型转换一下，例如：</p>
+<p>struct sockaddr_in servaddr;</p>
+<p>bind(listen_fd, (struct sockaddr <em>)&amp;servaddr, sizeof(servaddr));        /</em> initialize servaddr */</p>
+<h2 id="网络套接字函数"><a href="#网络套接字函数" class="headerlink" title="网络套接字函数"></a><strong>网络套接字函数</strong></h2><h3 id="socket模型创建流程图"><a href="#socket模型创建流程图" class="headerlink" title="socket模型创建流程图"></a><strong>socket模型创建流程图</strong></h3><a rel=Linux网络编程-Socket编程 href="/2019/09/17/Linux网络编程-Socket编程/socket4.png" title="" data-fancybox="images"><img src="/2019/09/17/Linux网络编程-Socket编程/socket4.png"></a>  
+
+<p>socket API</p>
+<h3 id="socket函数"><a href="#socket函数" class="headerlink" title="socket函数"></a><strong>socket函数</strong></h3><p>#include &lt;sys/types.h&gt; /* See NOTES */</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>int socket(int domain, int type, int protocol);</p>
+<p>domain:</p>
+<p>​    AF_INET 这是大多数用来产生socket的协议，使用TCP或UDP来传输，用IPv4的地址</p>
+<p>​    AF_INET6 与上面类似，不过是来用IPv6的地址</p>
+<p>​    AF_UNIX 本地协议，使用在Unix和Linux系统上，一般都是当客户端和服务器在同一台及其上的时候使用</p>
+<p>type:</p>
+<p>​    SOCK_STREAM 这个协议是按照顺序的、可靠的、数据完整的基于字节流的连接。这是一个使用最多的socket类型，这个socket是使用TCP来进行传输。</p>
+<p>​    SOCK_DGRAM 这个协议是无连接的、固定长度的传输调用。该协议是不可靠的，使用UDP来进行它的连接。</p>
+<p>​    SOCK_SEQPACKET该协议是双线路的、可靠的连接，发送固定长度的数据包进行传输。必须把这个包完整的接受才能进行读取。</p>
+<p>​    SOCK_RAW socket类型提供单一的网络访问，这个socket类型使用ICMP公共协议。（ping、traceroute使用该协议）</p>
+<p>​    SOCK_RDM 这个类型是很少使用的，在大部分的操作系统上没有实现，它是提供给数据链路层使用，不保证数据包的顺序</p>
+<p>protocol:</p>
+<p>​    传0 表示使用默认协议。</p>
+<p>返回值：</p>
+<p>​    成功：返回指向新创建的socket的文件描述符，失败：返回-1，设置errno</p>
+<p>socket()打开一个网络通讯端口，如果成功的话，就像open()一样返回一个文件描述符，应用程序可以像读写文件一样用read/write在网络上收发数据，如果socket()调用出错则返回-1。对于IPv4，domain参数指定为AF_INET。对于TCP协议，type参数指定为SOCK_STREAM，表示面向流的传输协议。如果是UDP协议，则type参数指定为SOCK_DGRAM，表示面向数据报的传输协议。protocol参数的介绍从略，指定为0即可。</p>
+<h3 id="bind函数"><a href="#bind函数" class="headerlink" title="bind函数"></a><strong>bind函数</strong></h3><p>#include &lt;sys/types.h&gt; /* See NOTES */</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</p>
+<p>sockfd：</p>
+<p>​    socket文件描述符</p>
+<p>addr:</p>
+<p>​    构造出IP地址加端口号</p>
+<p>addrlen:</p>
+<p>​    sizeof(addr)长度</p>
+<p>返回值：</p>
+<p>​    成功返回0，失败返回-1, 设置errno</p>
+<p>​    服务器程序所监听的网络地址和端口号通常是固定不变的，客户端程序得知服务器程序的地址和端口号后就可以向服务器发起连接，因此服务器需要调用bind绑定一个固定的网络地址和端口号。</p>
+<p>bind()的作用是将参数sockfd和addr绑定在一起，使sockfd这个用于网络通讯的文件描述符监听addr所描述的地址和端口号。前面讲过，struct sockaddr *是一个通用指针类型，addr参数实际上可以接受多种协议的sockaddr结构体，而它们的长度各不相同，所以需要第三个参数addrlen指定结构体的长度。如：</p>
+<p>struct sockaddr_in servaddr;</p>
+<p>bzero(&amp;servaddr, sizeof(servaddr));</p>
+<p>servaddr.sin_family = AF_INET;</p>
+<p>servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</p>
+<p>servaddr.sin_port = htons(6666);</p>
+<p>首先将整个结构体清零，然后设置地址类型为AF_INET，<strong>网络地址为INADDR_ANY，这个宏表示本地的任意IP地址</strong>，因为服务器可能有多个网卡，每个网卡也可能绑定多个IP地址，这样设置可以在所有的IP地址上监听，直到与某个客户端建立了连接时才确定下来到底用哪个IP地址，端口号为6666。</p>
+<h3 id="listen函数"><a href="#listen函数" class="headerlink" title="listen函数"></a><strong>listen函数</strong></h3><p>#include &lt;sys/types.h&gt; /* See NOTES */</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>int listen(int sockfd, int backlog);</p>
+<p>sockfd:</p>
+<p>​    socket文件描述符</p>
+<p>backlog:</p>
+<p>​    排队建立3次握手队列和刚刚建立3次握手队列的链接数和</p>
+<p>查看系统默认backlog</p>
+<p>cat /proc/sys/net/ipv4/tcp_max_syn_backlog</p>
+<p>典型的服务器程序可以同时服务于多个客户端，当有客户端发起连接时，服务器调用的accept()返回并接受这个连接，如果有大量的客户端发起连接而服务器来不及处理，尚未accept的客户端就处于连接等待状态，listen()声明sockfd处于监听状态，并且最多允许有backlog个客户端处于连接待状态，如果接收到更多的连接请求就忽略。listen()成功返回0，失败返回-1。</p>
+<h3 id="accept函数"><a href="#accept函数" class="headerlink" title="accept函数"></a><strong>accept函数</strong></h3><p>#include &lt;sys/types.h&gt;         /* See NOTES */</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</p>
+<p>sockdf:</p>
+<p>​    socket文件描述符</p>
+<p>addr:</p>
+<p>​    传出参数，返回链接客户端地址信息，含IP地址和端口号</p>
+<p>addrlen:</p>
+<p>​    传入传出参数（值-结果）,传入sizeof(addr)大小，函数返回时返回真正接收到地址结构体的大小</p>
+<p>返回值：</p>
+<p>​    成功返回一个新的socket文件描述符，用于和客户端通信，失败返回-1，设置errno</p>
+<p>三方握手完成后，服务器调用accept()接受连接，如果服务器调用accept()时还没有客户端的连接请求，就阻塞等待直到有客户端连接上来。addr是一个传出参数，accept()返回时传出客户端的地址和端口号。addrlen参数是一个传入传出参数（value-result argument），传入的是调用者提供的缓冲区addr的长度以避免缓冲区溢出问题，传出的是客户端地址结构体的实际长度（有可能没有占满调用者提供的缓冲区）。如果给addr参数传NULL，表示不关心客户端的地址。</p>
+<p>我们的服务器程序结构是这样的：</p>
+<p>while (1) {</p>
+<p>​    cliaddr_len = sizeof(cliaddr);</p>
+<p>​    connfd = accept(listenfd, (struct sockaddr *)&amp;cliaddr, &amp;cliaddr_len);</p>
+<p>​    n = read(connfd, buf, MAXLINE);</p>
+<p>​    ……</p>
+<p>​    close(connfd);</p>
+</div>
+<p>整个是一个while死循环，每次循环处理一个客户端连接。由于cliaddr_len是传入传出参数，每次调用accept()之前应该重新赋初值。accept()的参数listenfd是先前的监听文件描述符，而accept()的返回值是另外一个文件描述符connfd，之后与客户端之间就通过这个connfd通讯，最后关闭connfd断开连接，而不关闭listenfd，再次回到循环开头listenfd仍然用作accept的参数。accept()成功返回一个文件描述符，出错返回-1。</p>
+<h3 id="connect函数"><a href="#connect函数" class="headerlink" title="connect函数"></a><strong>connect函数</strong></h3><p>#include &lt;sys/types.h&gt;                     /* See NOTES */</p>
+<p>#include &lt;sys/socket.h&gt;</p>
+<p>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</p>
+<p>sockdf:</p>
+<p>​    socket文件描述符</p>
+<p>addr:</p>
+<p>​    传入参数，指定服务器端地址信息，含IP地址和端口号</p>
+<p>addrlen:</p>
+<p>​    传入参数,传入sizeof(addr)大小</p>
+<p>返回值：</p>
+<p>​    成功返回0，失败返回-1，设置errno</p>
+<p>客户端需要调用connect()连接服务器，connect和bind的参数形式一致，区别在于bind的参数是自己的地址，而connect的参数是对方的地址。connect()成功返回0，出错返回-1。</p>
+<h2 id="C-S模型-TCP"><a href="#C-S模型-TCP" class="headerlink" title="C/S模型-TCP"></a><strong>C/S模型-TCP</strong></h2><p>下图是基于TCP协议的客户端/服务器程序的一般流程：</p>
+<a rel=Linux网络编程-Socket编程 href="/2019/09/17/Linux网络编程-Socket编程/socket5.png" title="" data-fancybox="images"><img src="/2019/09/17/Linux网络编程-Socket编程/socket5.png"></a>  
+
+<p>TCP协议通讯流程</p>
+<p>服务器调用socket()、bind()、listen()完成初始化后，调用accept()阻塞等待，处于监听端口的状态，客户端调用socket()初始化后，调用connect()发出SYN段并阻塞等待服务器应答，服务器应答一个SYN-ACK段，客户端收到后从connect()返回，同时应答一个ACK段，服务器收到后从accept()返回。</p>
+<p>数据传输的过程：</p>
+<p>建立连接后，TCP协议提供全双工的通信服务，但是一般的客户端/服务器程序的流程是由客户端主动发起请求，服务器被动处理请求，一问一答的方式。因此，服务器从accept()返回后立刻调用read()，读socket就像读管道一样，如果没有数据到达就阻塞等待，这时客户端调用write()发送请求给服务器，服务器收到后从read()返回，对客户端的请求进行处理，在此期间客户端调用read()阻塞等待服务器的应答，服务器调用write()将处理结果发回给客户端，再次调用read()阻塞等待下一条请求，客户端收到后从read()返回，发送下一条请求，如此循环下去。</p>
+<p>如果客户端没有更多的请求了，就调用close()关闭连接，就像写端关闭的管道一样，服务器的read()返回0，这样服务器就知道客户端关闭了连接，也调用close()关闭连接。注意，任何一方调用close()后，连接的两个传输方向都关闭，不能再发送数据了。如果一方调用shutdown()则连接处于半关闭状态，仍可接收对方发来的数据。</p>
+<p>在学习socket API时要注意应用程序和TCP协议层是如何交互的： 应用程序调用某个socket函数时TCP协议层完成什么动作，比如调用connect()会发出SYN段 应用程序如何知道TCP协议层的状态变化，比如从某个阻塞的socket函数返回就表明TCP协议收到了某些段，再比如read()返回0就表明收到了FIN段</p>
+<h3 id="server"><a href="#server" class="headerlink" title="server"></a><strong>server</strong></h3><p>下面通过最简单的客户端/服务器程序的实例来学习socket API。</p>
+<p>server.c的作用是从客户端读字符，然后将每个字符转换为大写并回送给客户端。</p>
+<h3 id="client"><a href="#client" class="headerlink" title="client"></a><strong>client</strong></h3><p>client.c的作用是从命令行参数中获得一个字符串发给服务器，然后接收服务器返回的字符串并打印。</p>
+<p>由于客户端不需要固定的端口号，因此不必调用bind()，客户端的端口号由内核自动分配。注意，客户端不是不允许调用bind()，只是没有必要调用bind()固定一个端口号，服务器也不是必须调用bind()，但如果服务器不调用bind()，内核会自动给服务器分配监听端口，每次启动服务器时端口号都不一样，客户端要连接服务器就会遇到麻烦。</p>
+<p>客户端和服务器启动后可以使用netstat命令查看链接情况：</p>
+<p>netstat -apn|grep 6666</p>
+<h2 id="出错处理封装函数"><a href="#出错处理封装函数" class="headerlink" title="出错处理封装函数"></a><strong>出错处理封装函数</strong></h2><p>上面的例子不仅功能简单，而且简单到几乎没有什么错误处理，我们知道，系统调用不能保证每次都成功，必须进行出错处理，这样一方面可以保证程序逻辑正常，另一方面可以迅速得到故障信息。</p>
+<p>为使错误处理的代码不影响主程序的可读性，我们把与socket相关的一些系统函数加上错误处理代码包装成新的函数，做成一个模块wrap.c：</p>
+
+        </div>
+        
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-09-17T13:35:15.537Z" itemprop="dateUpdated">2019-09-17 21:35:15</time>
+</span><br>
+
+
+        
+        转载注明出处，原文地址：<a href="/2019/09/17/Linux网络编程-Socket编程/" target="_blank" rel="external">www.huangshurong.top/2019/09/17/Linux网络编程-Socket编程/</a>
+        
+    </div>
+    <footer>
+        <a href="www.huangshurong.top">
+            <img src="/img/yong.png" alt="HSR">
+            HSR
+        </a>
+    </footer>
+</blockquote>
+
+        
+        <div class="post-footer">
+            
+            <div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/17/Linux网络编程-Socket编程/&title=《Linux网络编程-Socket编程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/17/Linux网络编程-Socket编程/&title=《Linux网络编程-Socket编程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="next">
+      <a href="/2019/09/16/Linux网络编程-网络基础/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Linux网络编程-网络基础</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#套接字概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">套接字概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预备知识"><span class="post-toc-number">2.</span> <span class="post-toc-text">预备知识</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#网络字节序"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">网络字节序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#IP地址转换函数"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">IP地址转换函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#sockaddr数据结构"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">sockaddr数据结构</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络套接字函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">网络套接字函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#socket模型创建流程图"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">socket模型创建流程图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#socket函数"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">socket函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#bind函数"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">bind函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#listen函数"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">listen函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#accept函数"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">accept函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#connect函数"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">connect函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#C-S模型-TCP"><span class="post-toc-number">4.</span> <span class="post-toc-text">C/S模型-TCP</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#server"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">server</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#client"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">client</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#出错处理封装函数"><span class="post-toc-number">5.</span> <span class="post-toc-text">出错处理封装函数</span></a></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
+</article>
+
+
+</div>
+
+    </main>
+    <footer class="footer ">
+    
+    <div class="top">
+        
+            <p>
+    <span>Links：</span>
+    
+    <span class="blogroll-item">
+        <a href="https://www.huangshurong.top" target="_blank">HOME</a>
+    </span>
+    
+</p>
+
+        
+    </div>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                HSR &copy; 2017 - 2019
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+
+            
+                
+<span class="site-uv" title="总访客量">
+    <i class="icon icon-user"></i>
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>
+
+
+<span class="site-pv" title="总访问量">
+    <i class="icon icon-eye"></i>
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>
+</span>
+
+            
+        </p>
+    </div>
+</footer>
+
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/17/Linux网络编程-Socket编程/&title=《Linux网络编程-Socket编程》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/17/Linux网络编程-Socket编程/&title=《Linux网络编程-Socket编程》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwUlEQVR42u3awU7kMBAE0Pn/n2alPaFlk6ly2wGklxMSM4lfkNymul+v+Pr4e339+f63H5+ur5+/+m3ylM0XHh4e3tLSr677RSeLyO9z//T8u3h4eHjP8Npi0JKSIpHs7fma8fDw8H4Cb60Y5C8of4l4eHh4v4XXFow2H5g/Fw8PD+9JXhsHJBt68vl5QLwta8HDw8OLeZMG2Hf9/FB/Dw8PD6/sqreNsXk7LTkuFyvEw8PDO8DLI9S2SOTx6xq+KBh4eHh4B3jtjSbbfbLpr/0Z3oDx8PDwNvHa2LQtBruO5nnI+5/DNB4eHt5h3nyJk6giuXOdteDh4eE9yEu24MVoNb7nZBABDw8P70leHpImkUR0/E0GT4PxrzdhBB4eHt6Ylzf78xg3jxvaJll7TMfDw8M7x5sPB+wan1oLlJPDNx4eHt6TvLWQtz0i55t+Hprg4eHhneatNfWTNljR7B8EHG+ejoeHh7eJ195ocrRto9u2zLxJWfDw8PA28fJG/qRNtTZYMDlkX9Y9PDw8vE28+VBU/iLy5tmrvKIYAg8PD28rr93Q8yBjLd5dKwaX/zfg4eHhbeXlm/u8eT85RuflAQ8PD+8cb4JpQ4r55/MIo645eHh4eCWvPbDu2r7XjtTFq8fDw8M7wJtEtMm3Jq2y4r+B+1eGh4eHd4DXNuzvb5dQ21bWvP2Gh4eHt5eXbOhrgPwQnLff6rKEh4eHd4zXLrotDO1QwmT0Cg8PD+8cb/LgJKRYO6Dn/azFABcPDw9vwFsLCHLeiZKzNoiAh4eHt5fXLqgtDGuDVsmLG/X38PDw8Ma8tc5RezTPt/W8dr0ZPsDDw8P7Yby2PTZppy2OfOHh4eF9Ky85zuYbfTumcF8wLteAh4eHd4w3GXJqS8WukYKo9YWHh4d3gDdpgLUTXvmi1zCbRwfw8PDw/v38H/QJSt/phN2MAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.4.4"></script>
+<script type="text/javascript" src="/js/plugins/ios-orientationchange-fix.js?v=1.4.4"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.js"></script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script type="text/javascript" src="/js/method.js?v=1.4.4"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.4.4"></script>
+
+<!-- third-party -->
+
+
+
+
+
+
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.4.4"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+
+
+
+    
+</body>
+</html>
