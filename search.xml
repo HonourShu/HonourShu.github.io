@@ -245,8 +245,66 @@
 <li><h4 id="三目运算符增强"><a href="#三目运算符增强" class="headerlink" title="三目运算符增强"></a>三目运算符增强</h4><p>C中返回的是值，C++中返回的是变量</p>
 </li>
 <li><h4 id="const关键字增强"><a href="#const关键字增强" class="headerlink" title="const关键字增强"></a>const关键字增强</h4><p>C语言中，const修饰的变量是伪常量，编译器会分配内存</p>
-<p>C++中，const不会分配内存</p>
+<p>C++中，const会放入符号表中</p>
 <p>C语言中的const默认是外部链接，而C++中是内部链接</p>
+<p>const分配内存情况</p>
+<p>​    ①对变量取地址会分配临时内存</p>
+<p>​    ②extern编译器也会给const变量分配内存</p>
+<p>​    ③用普通变量初始化const的变量</p>
+<p>​    ④自定义数据类型，加const也会分配内存</p>
+<p>尽量以const替换#define</p>
+<p>​    ①const有类型</p>
+<p>​    ②const有作用域</p>
+</li>
+<li><h4 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h4><ol>
+<li><p>引用基本语法</p>
+<p>Type &amp;别名 = 原名</p>
+<p>int a = 10;</p>
+<p>int &amp;b = a;</p>
+</li>
+<li><p>引用必须初始化，初始化后不可以修改</p>
+</li>
+<li><p>对数组建立引用</p>
+<p>①int arr[10];</p>
+<p>​    int (&amp;pArr)[10] = arr;</p>
+<p>②typedef int(ARRAYREF)[10];</p>
+<p>​    ARRAYREF &amp;pArr2 = arr;</p>
+</li>
+<li><p>参数的传递方式</p>
+<ol>
+<li>值传递</li>
+<li>地址传递</li>
+<li>引用传递</li>
+</ol>
+</li>
+<li><p>引用的注意事项</p>
+<ol>
+<li>引用必须引用一块合法的内存空间，不能有NULL引用</li>
+<li>不要返回一个局部变量的引用</li>
+<li>如果函数的返回值是引用，那么这个函数的调用可以作为左值</li>
+<li>引用的本质再C++内部实现是一个指针常量</li>
+</ol>
+</li>
+<li><p>引用的使用</p>
+<ol>
+<li><p>指针的引用</p>
+<p>用一级指针引用可以代替二级指针</p>
+<p>struct Person</p>
+<p>{</p>
+<p>};</p>
+<p>fun(Person * &amp;a);</p>
+</li>
+<li><p>常量的引用</p>
+<p>const int &amp;ref = 10;</p>
+<p>加入const后， 编译器处理方式为： int tmp = 10， const int &amp;ref = 10；</p>
+<p>但可以通过指针修改</p>
+<p>int *p = (int *)&ref;</p>
+<p>*p = 1000;</p>
+<p>常量引用使用场景 用来修饰形参为只读</p>
+</li>
+</ol>
+</li>
+</ol>
 </li>
 </ol>
 ]]></content>
