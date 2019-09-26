@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+    <title>C++基础02 | 庸的博客 | 爱代码,爱生活~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content>
+    <link rel="shortcut icon" href="/img/yong.png">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.4">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	false,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}'),
+            d: JSON.parse('{"app_id":null}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
+    
+</head>
+
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/yong.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">HSR</h5>
+          <a href="mailto:461467948@qq.com" title="461467948@qq.com" class="mail">
+            
+              <span>4</span>
+            
+              <span>6</span>
+            
+              <span>1</span>
+            
+              <span>4</span>
+            
+              <span>6</span>
+            
+              <span>7</span>
+            
+              <span>9</span>
+            
+              <span>4</span>
+            
+              <span>8</span>
+            
+              <span>@</span>
+            
+              <span>q</span>
+            
+              <span>q</span>
+            
+              <span>.</span>
+            
+              <span>c</span>
+            
+              <span>o</span>
+            
+              <span>m</span>
+            
+          </a>
+        </hgroup>
+        
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/HonourShu" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+        </ul>
+        
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>C++基础02</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">C++基础02</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-09-25T14:06:40.000Z" itemprop="datePublished" class="page-time">
+  2019-09-25
+</time>
+
+
+            
+        </h5>
+        
+    </div>
+    
+
+</header>
+
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+
+<div class="container body-wrap">
+    <article id="post-C-基础02"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">C++基础02</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-09-25 22:06:40" datetime="2019-09-25T14:06:40.000Z"  itemprop="datePublished">2019-09-25</time>
+
+            
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <h3 id="设计类-抽象类"><a href="#设计类-抽象类" class="headerlink" title="设计类 抽象类"></a><strong>设计类 抽象类</strong></h3><ol>
+<li><p>class 类名</p>
+<p>{</p>
+<p>public 公共权限</p>
+<p>​        设置成员属性</p>
+<p>​        设置成员函数</p>
+<p>}；</p>
+<p>使用类 创建对象 实例化对象</p>
+<p>类名 对象名</p>
+<p>通过对象 来设置属性 调用成员函数</p>
+</li>
+<li><p>类和对象的关系？</p>
+<p>类是对对象的抽象，对象是对类的实例</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi = <span class="number">3.14</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">calculateZC</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">2</span> * pi * m_R;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> m_R;</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Circle c1;</span><br><span class="line">	c1.m_R = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"c1的周长为："</span>&lt;&lt;c1.calculateZC()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	test();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a><strong>内联函数</strong></h3><p>用来代替宏函数</p>
+<p>#define定义的函数  没有类型，没有作用域概念，而且自加自减操作会出现错误</p>
+<p>内联函数注意事项</p>
+<p>​    inline void func(); //内联函数声明</p>
+<p>​    inline void func(){ } //如果函数声明的时候，没有加inline关键字，那么这个函数依然不算内联函数</p>
+<p>类内部的成员函数，会默认加上inline关键字，但以下情况编译器可能考虑不会将函数进行内联编译</p>
+<p>​    ①不能存在任何形式的循环语句</p>
+<p>​    ②不能存在过多的条件判断语句</p>
+<p>​    ③函数体不能过于庞大</p>
+<p>​    ④不能对函数进行取址操作</p>
+<p>内联仅仅只是给编译器的一个建议，加上关键字，编译器不一定按照内联处理，但不加关键字，编译器也可能给你进行内联处理</p>
+<h3 id="函数的默认参数以及占位参数"><a href="#函数的默认参数以及占位参数" class="headerlink" title="函数的默认参数以及占位参数"></a>函数的默认参数以及占位参数</h3><h4 id="函数默认参数"><a href="#函数默认参数" class="headerlink" title="函数默认参数"></a>函数默认参数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a = <span class="number">10</span>, <span class="keyword">int</span> b = <span class="number">20</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"a + b = "</span>&lt;&lt;a + b&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	func();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数参数注意事项：</p>
+<p>如果有一个位置有默认参数，那么从这个位置开始，从左往右都必须有默认参数</p>
+<p>传入参数，如果有参数，就用传入的参数，没有参数就用默认参数</p>
+<p>如果函数声明里有了默认参数，那么函数实现时候必须没有默认参数，声明和实现中，只能有一个有默认参数，不能同时出现</p>
+<h4 id="函数占位参数"><a href="#函数占位参数" class="headerlink" title="函数占位参数"></a>函数占位参数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	func(<span class="number">10</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果有了占位参数，函数调用时必须要提供这个参数，但是用不到参数</p>
+<p>占位参数，没什么大用途，只有后面重载 ++符号才有一点用处</p>
+<h3 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a><strong>函数重载</strong></h3><p>函数在同一个作用域，函数名称相同</p>
+<p>函数的参数的个数不同、类型不同、顺序不同</p>
+<p>返回值不能作为函数重载的条件</p>
+<p>当函数重载碰到默认参数时，要注意避免二义性问题</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b = <span class="number">10</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    func(<span class="number">10</span>);<span class="comment">//这样就会出现二义性</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>引用的重载版本</p>
+<p>const 可以作为重载条件</p>
+<h3 id="extern-C"><a href="#extern-C" class="headerlink" title="extern  C"></a>extern  C</h3><p>用于解决C++文件中调用C语言的代码</p>
+<p>C++中，函数是可以发生重载的，编译器会把这个函数名称改变</p>
+<p>C++中想调用C语言函数</p>
+<p>​    extern “C” void show(); //show()是你想调用的C语言的函数名，按照C语言方式做链接</p>
+<p>或者在C语言中做以下处理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="C和C-下的封装的区别"><a href="#C和C-下的封装的区别" class="headerlink" title="C和C++下的封装的区别"></a>C和C++下的封装的区别</h3><h4 id="C语言的封装"><a href="#C语言的封装" class="headerlink" title="C语言的封装"></a>C语言的封装</h4><p>属性和行为分开处理了，类型检测不够</p>
+<h4 id="C-的封装"><a href="#C-的封装" class="headerlink" title="C++的封装"></a>C++的封装</h4><p>严格类型转换检测，让属性和行为（变量和函数）绑定到一起</p>
+<p>属性和行为作为一个整体来表示生活中具体的事物</p>
+<p>控制权限: </p>
+<p>​    public    公共权限</p>
+<p>​    protected    保护权限</p>
+<p>​    private    私有权限</p>
+<p>struct 和 class 是一个意思， 唯一不同的是默认权限， 前者是public，后者是private</p>
+<p>私有权限 就是私有成员（变量、函数），在类的内部可以访问，在类的外部和子类都不可以访问</p>
+<p>公共权限 在类的内部和外部都可以访问</p>
+<p>保护权限 类的内部可以访问，当前类的子类可以访问，类外部不能访问</p>
+<h4 id="建议成员变量设置为私有private"><a href="#建议成员变量设置为私有private" class="headerlink" title="建议成员变量设置为私有private"></a>建议成员变量设置为私有private</h4><p>自己提供公共的对外接口来进行set或者get方法访问</p>
+
+        </div>
+        
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-09-26T02:57:35.358Z" itemprop="dateUpdated">2019-09-26 10:57:35</time>
+</span><br>
+
+
+        
+        转载注明出处，原文地址：<a href="/2019/09/25/C-基础02/" target="_blank" rel="external">www.huangshurong.top/2019/09/25/C-基础02/</a>
+        
+    </div>
+    <footer>
+        <a href="www.huangshurong.top">
+            <img src="/img/yong.png" alt="HSR">
+            HSR
+        </a>
+    </footer>
+</blockquote>
+
+        
+        <div class="post-footer">
+            
+            <div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/25/C-基础02/&title=《C++基础02》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/25/C-基础02/&title=《C++基础02》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="next">
+      <a href="/2019/09/25/C-基础01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">C++基础01</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#设计类-抽象类"><span class="post-toc-number">1.</span> <span class="post-toc-text">设计类 抽象类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#内联函数"><span class="post-toc-number">2.</span> <span class="post-toc-text">内联函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#函数的默认参数以及占位参数"><span class="post-toc-number">3.</span> <span class="post-toc-text">函数的默认参数以及占位参数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#函数默认参数"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">函数默认参数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#函数占位参数"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">函数占位参数</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#函数重载"><span class="post-toc-number">4.</span> <span class="post-toc-text">函数重载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#extern-C"><span class="post-toc-number">5.</span> <span class="post-toc-text">extern  C</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#C和C-下的封装的区别"><span class="post-toc-number">6.</span> <span class="post-toc-text">C和C++下的封装的区别</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#C语言的封装"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">C语言的封装</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#C-的封装"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">C++的封装</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#建议成员变量设置为私有private"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">建议成员变量设置为私有private</span></a></li></ol></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
+</article>
+
+
+</div>
+
+    </main>
+    <footer class="footer ">
+    
+    <div class="top">
+        
+            <p>
+    <span>Links：</span>
+    
+    <span class="blogroll-item">
+        <a href="https://www.huangshurong.top" target="_blank">HOME</a>
+    </span>
+    
+</p>
+
+        
+    </div>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                HSR &copy; 2017 - 2019
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+
+            
+                
+<span class="site-uv" title="总访客量">
+    <i class="icon icon-user"></i>
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>
+
+
+<span class="site-pv" title="总访问量">
+    <i class="icon icon-eye"></i>
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>
+</span>
+
+            
+        </p>
+    </div>
+</footer>
+
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=www.huangshurong.top/2019/09/25/C-基础02/&title=《C++基础02》 — 庸的博客&pic=www.huangshurong.top/img/yong.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=www.huangshurong.top/2019/09/25/C-基础02/&title=《C++基础02》 — 庸的博客&source=这是一个菜鸡的博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aO3LjQAwFQN//0nKywbpcHL+HoQINm5HKkgm2Agif+fqKr9d/1/ozvz//+3/Xr9dRti4MDIyPZbyW11WA5L/WD72+cxsFAwPjCYwkgbbhZ2l0Hffy7xgYGBjxrWcpeBYLAwMDYyfhrnlJCYiBgYExa2LzUdq6HEzefWMvjoGB8YGMncby3a/fst/AwMD4KMarvPYXlvc+z787Y2BgHM3Iw+SPuFMa5mUfBgbGMxmzxHrXEYrkSEc9bsPAwDiCkd9uNr5Pyr68KLx8BgwMjKMZbYDZWL9tU4cDOAwMjKMZyVGGvDXNC8Ec3z4JBgbGSYy8ZW3BSbJuC9PiXBsGBsZxjJ129I8A5QGL/J4/3sXAwHgAoy0H8xSct8Szzw/7ZgwMjI9itIcq2tZ0NoybrUUxMDBOZczmc+1BinbQ1i5TMTAwzmbMhvj7x7ySNFqvNjEwMB7MmLWv934p9d4VAwPjaMb+mL4d97fR/+i/MTAwHsBok2Zb/OWDuWINgIGB8TBGcmwiP9S1jy+eHAMD4zGMvJlsl5Ftqk1Kz+h3AwMD4yBGPd4KUnO+HL2hZMTAwDiU8SqvvE3daW7bshIDA+Nsxqws21lwzg6K3ZWmMTAwPpex36bOSsYkpRZRMDAwHsC4dwyXl3rtGuDyy8XAwMAoE2Xb7u5EwcDAwMhLw3Xg/HXy1Vw2sRgYGEczZuXdbMSWF53FkhUDA+NoRnu4oV03zpLv7GcAAwPjOMY3Jl5gvn2jNrkAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.4.4"></script>
+<script type="text/javascript" src="/js/plugins/ios-orientationchange-fix.js?v=1.4.4"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.2/dist/jquery.fancybox.min.js"></script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script type="text/javascript" src="/js/method.js?v=1.4.4"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.4.4"></script>
+
+<!-- third-party -->
+
+
+
+
+
+
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.4.4"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+
+
+
+    
+</body>
+</html>
